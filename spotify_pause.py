@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import os
@@ -5,14 +6,30 @@ import signal
 import subprocess
 import time
 
+import config
+
+# init
+data = config.return_config()
+
+"""
+data[0] - config_id
+data[1] - client_secret
+data[2] - cache_path
+data[3] - device_name
+"""
+
+
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-    client_id='4de4fac2c19b4553b53aafb15cea0d69',
-    client_secret='cb4b9b7a91eb4f4789300defc0e50a1e',
+    client_id=data[0],
+    client_secret=data[1],
     redirect_uri='http://127.0.0.1:8000/callback',
     scope='user-modify-playback-state user-read-playback-state',
     open_browser=False,
-    cache_path='/home/pi/spotipy_cache/cache'
+    cache_path=data[2]
 ))
+
+user = sp.current_user()
+device_name = data[3]
 
 devices = sp.devices()['devices']
 active_device = None

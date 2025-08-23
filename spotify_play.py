@@ -3,24 +3,37 @@ from spotipy.oauth2 import SpotifyOAuth
 import time
 import random
 
+import config
+
 print("Initialization...")
 
+# init
+data = config.return_config()
+
+"""
+data[0] - config_id
+data[1] - client_secret
+data[2] - cache_path
+data[3] - device_name
+"""
+
+
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-    client_id='4de4fac2c19b4553b53aafb15cea0d69',
-    client_secret='cb4b9b7a91eb4f4789300defc0e50a1e',
+    client_id=data[0],
+    client_secret=data[1],
     redirect_uri='http://127.0.0.1:8000/callback',
-    scope='user-read-private playlist-read-private user-modify-playback-state user-read-playback-state streaming',
+    scope='user-modify-playback-state user-read-playback-state',
     open_browser=False,
-    cache_path='/home/pi/spotipy_cache/cache'
+    cache_path=data[2]
 ))
 
-print("Authentication completed")
-
 user = sp.current_user()
+device_name = data[3]
+
+print("Authentication completed")
 print(f"Logged user: {user['display_name']}")
 
 playlist_uri = 'spotify:playlist:02hdeJ4xNLqi0ek760Znxh'
-device_name = 'rpi3'
 
 def set_volume(device_id, volume_percent=0):
     try:

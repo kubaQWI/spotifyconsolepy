@@ -5,6 +5,7 @@ import asyncio
 import sys
 
 import config
+import spotify_commands as sp
 
 async def ainput(prompt: str) -> str:
     return await asyncio.to_thread(input, f'{prompt}')
@@ -175,111 +176,3 @@ async def main():
     await meow_
     
 asyncio.run(main())
-
-
-
-""" ignore this, if something will break i will uncomment this, ------ kubus :3
-
-
-            if cmd == "help":
-                for c, d in commands.items():
-                    print(f"{c:25} - {d}")
-
-            elif cmd == "play":
-                sp.start_playback()
-
-            elif cmd == "pause":
-                sp.pause_playback()
-
-            elif cmd == "next":
-                sp.next_track()
-
-            elif cmd == "previous":
-                sp.previous_track()
-
-            elif cmd == "current":
-                current = sp.current_playback()
-
-                if current and current["is_playing"]:
-                    name = current["item"]["name"]
-                    artist = current["item"]["artists"][0]["name"]
-                    print(f"Currently playing: {name} by {artist}")
-
-                else:
-                    print("Nothing is playing.")
-
-            elif cmd == "volume":
-                if args[:1]:
-                    volume = int(args[1])
-                    sp.volume(volume)
-                else:
-                    raise IndexError
-
-            elif cmd == "shuffle":
-                if args[:1]:
-                    mode = args[1].lower() == "on"
-                    sp.shuffle(mode)
-                else:
-                    raise IndexError
-
-            elif cmd == "repeat" and args[1:]:
-                sp.repeat(args[1].lower())
-
-            elif cmd == "devices":
-                devices = sp.devices()["devices"]
-
-                for d in devices:
-                    print(f"{d['name']} (ID: {d['id']}) - {'ACTIVE' if d['is_active'] else 'inactive'}")
-
-            elif cmd == "transfer":
-                if args[:1]:
-                    name = " ".join(args[1:])
-                    devices = sp.devices()["devices"]
-                    device = next((d for d in devices if d["name"].lower() == name.lower()), None)
-
-                    if device:
-                        sp.transfer_playback(device["id"], force_play=False)
-                        print(f"Transferred to {device['name']}")
-
-                    else:
-                        print("Device not found.")
-                else:
-                    raise IndexError
-
-            elif cmd == "search":
-                if args[:1]:
-                    results = sp.search(argstr, type="track", limit=5)
-
-                    for i, item in enumerate(results["tracks"]["items"], 1):
-                        print(f"{i}. {item['name']} by {item['artists'][0]['name']} - URI: {item['uri']}")
-
-                else:
-                    raise IndexError
-                
-            elif cmd == "playuri":
-                if args[:1]:
-                    sp.start_playback(uris=[args[1]])
-
-                else:
-                    raise IndexError
-                
-            elif cmd == "addqueue":
-                if args[:1]:
-                    sp.add_to_queue(args[1])
-                    print("Added to queue.")
-
-                else:
-                    raise IndexError
-        
-            elif cmd == "queue": # kinda pointless??
-                print("Spotify Web API does not support retrieving the queue. Use your client.")
-
-            elif cmd == "exit":
-                print("Exiting...")
-
-                sys.exit(0)
-
-            elif cmd == None:
-                print(f"There is no command such as '{line}'. Type 'help' for more info.")
-
-            """

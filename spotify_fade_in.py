@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import time
@@ -8,12 +9,12 @@ import config
 data = config.return_config()
 
 """
-data[0] - client_id
+data[0] - config_id
 data[1] - client_secret
 data[2] - cache_path
 data[3] - device_name
-
 """
+
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     client_id=data[0],

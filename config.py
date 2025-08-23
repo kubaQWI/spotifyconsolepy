@@ -8,7 +8,7 @@ default_config_ini = "./config.ini"
 async def ainput(prompt: str) -> str:
     return await asyncio.to_thread(input, f'{prompt}')
 
-def return_config(file_path: str = default_config_ini) -> list:
+def return_config(file_path: str = default_config_ini) -> list: # type: ignore
     if not Path(file_path).exists():
         print("ini file does not exist. Creating a new one")
         first_time()
