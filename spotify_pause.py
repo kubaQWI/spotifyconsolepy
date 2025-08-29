@@ -12,10 +12,10 @@ import config
 data = config.return_config()
 
 """
-data[0] - config_id
-data[1] - client_secret
-data[2] - cache_path
-data[3] - device_name
+"   data[0] - config_id
+"   data[1] - client_secret
+"   data[2] - cache_path
+"   data[3] - device_name
 """
 
 

@@ -1,156 +1,323 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import asyncio
+import time
 
 import config
 
-# init
-data = config.return_config()
-
 """
-data[0] - config_id
-data[1] - client_secret
-data[2] - cache_path
-data[3] - device_name
+"   config_data[0] - config_id
+"   config_data[1] - client_secret
+"   config_data[2] - cache_path
+"   config_data[3] - device_name
 """
 
+config_data = config.return_config()
 
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-    client_id=data[0],
-    client_secret=data[1],
+def init():
+
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+    client_id=config_data[0],
+    client_secret=config_data[1],
     redirect_uri='http://127.0.0.1:8000/callback',
     scope='user-modify-playback-state user-read-playback-state',
     open_browser=False,
-    cache_path=data[2]
-))
+    cache_path=config_data[2]
+    ))
+    
+    return sp
 
-user = sp.current_user()
-device_name = data[3]
+if not config_data:
+    print("Check if config data is correct. All spotify related functions are disabled.")
+    config_data = [None, None, None, None]
+else:
+    allowed = True
 
-async def set_volume(device_id, volume_percent=0):
+    for index, key in enumerate(config_data): # check if variables are empty, if true set it as None.
+        if not key:
+            config_data[index] = None
+            allowed = False
+        else:
+            pass
+    
+    if not allowed:
+        print("Check if config data is correct. All spotify related functions are disabled.")
+        config_data = [None, None, None, None]
+    else:
+        sp = init()
+
+device_name = config_data[3]
+
+def int_to_time(value: int | float, is_ms: bool = True) -> str:
+    if is_ms:
+        value = value / 1000
+    else:
+        pass
+
+    if value >= 3600: # value in seconds*
+        timestamp = time.strftime("%H:%M:%S", time.gmtime(value))
+
+    else:
+        timestamp = time.strftime("%M:%S", time.gmtime(value))
+
+    return timestamp
+
+async def api_get_device_data(device: str | None = config_data[3], print_all_devices: bool = False) -> dict | None:
+
+    api_get_devices = (sp.devices() or {}).get("devices", {})
+
+    if device is None:
+        print(f"Your config file is damaged. Use 'change-ini' to fix it.")
+        return {}
+
+    if not api_get_devices:
+        print("No devices found")
+        return {}
+
+    if print_all_devices:
+        for index, key in enumerate(api_get_devices):
+            print(f"{index + 1}: Name: {key['name']}, ID: {key['id']}, Is active: {key['is_active']}, Is restricted: {key['is_restricted']}, Type: {key['type']}")
+
+    data = {}
+
+    """
+    "   returns:
+    "       'id'                    - str
+    "       'is_active;             - bool
+    "       'is_private_session'    - bool
+    "       'is_restricted'         - bool
+    "       'name'                  - str
+    "       'supports_volume'       - bool
+    "       'type'                  - str
+    "       'volume_percent'        - int
+    "
+    "   if None found:
+    "       returns empty dict
+    """
+
     try:
-        await sp.volume(volume_percent, device_id=device_id)
-        print(f"Volume set to {volume_percent}%")
-    except Exception as e:
-        print(f"Error setting volume: {e}")
-
-async def activate_device(device_id):
-    print("Activating device...")
-    silence_uri = 'spotify:track:0EZMXJMWf0tLKRWwCiA6Sx'
-    try:
-        await sp.start_playback(device_id=device_id, uris=[silence_uri])
-        await asyncio.wait(1)
-        await sp.pause_playback(device_id=device_id)
-    except Exception as e:
-        print(f"Activating device failed: {e}")
-
-async def start_playlist(device_id):
-    playlist = await sp.playlist_tracks(playlist_uri)
-    tracks = playlist['items']
-    while playlist['next']:
-        playlist = await sp.next(playlist)
-        tracks.extend(playlist['items'])
-
-    random_track = random.choice(tracks)
-    track_uri = random_track['track']['uri']
-    print(f"Starting playlist from random track: {random_track['track']['name']}")
-
-    await sp.shuffle(True, device_id=device_id)
-#    sp.repeat('context', device_id=device_id)
-
-    await sp.start_playback(
-        device_id=device_id,
-        context_uri=playlist_uri,
-        offset={'uri': track_uri}
-    )
-
-async def get_target_device():
-    devices = await sp.devices()['devices']
-    for d in devices:
-        if d['name'].lower() == device_name.lower():
-            return d
-    return None
-
-async def monitor_playback(device_id):
-    last_track_uri = None
-    while True:
-        try:
-            playback = await sp.current_playback()
-            if not playback or not playback['is_playing']:
-                await asyncio.wait(2)
-                continue
-
-            current_track = playback['item']
-            if not current_track:
-                await asyncio.wait(2)
-                continue
-
-            uri = current_track['uri']
-            name = current_track['name']
-
-            if uri != last_track_uri:
-                print(f"\nNow playing: {name}")
-                last_track_uri = uri
-
-            progress = playback['progress_ms'] / 1000
-            total = current_track['duration_ms'] / 1000
-            remaining = total - progress
-
-            if remaining <= 1:
-                print("Track ending, ensuring playback continues...")
-                await sp.next_track(device_id=device_id)
-
-        except Exception as e:
-            print(f"Playback error: {e}")
-
-        time.sleep(2)
-
-async def fade_in(device_id, fade_duration: int = 5) -> None:
-    try:
-        devices_response = await sp.devices()
-
-        if 'devices' not in devices_response:
-            print("Error: no control devices.")
-            return
-
-        current_volume = devices_response['devices'][0].get('volume_percent', None)
-
-        if current_volume == None:
-            print("Failed to get device volume.")
-
-        print(f"Current volume: {current_volume}")
-
-        for volume in range(current_volume, 96, int(fade_duration)):
-            await sp.volume(volume, device_id) # << assume that it works (i dont have premium xd) decomment this when you will test it out
-            print(f"Vol: {volume}")
-            time.sleep(fade_duration / 10)
+        for _, key in enumerate(api_get_devices): # searching
+            for l, r in key.items():
+                if 'name' in l and device.lower() in r.lower():
+                    data.update(key)
 
     except Exception as e:
-        print(f"Something went wrong: {e}")
-
-async def fade_out(device_id, fade_duration=5):
-    try:
-        devices_response = await sp.devices()
+        print(f"There was a problem: {e}")
         
-        if 'devices' not in devices_response:
-            print("Error: no control devices.")
+    return data if not None else {}
+
+async def set_volume(volume: int, device_data: dict | None = None) -> None:
+    if type(device_data) == dict:
+            print("Custom id is not yet supported.")
+            device_id = None
+    
+    if device_data is None:
+        device_data = await api_get_device_data()
+
+    if not device_data:
+        return
+
+    device_id = device_data.get("id")
+
+    try:
+        sp.volume(volume, device_id)
+    except Exception as e:
+        print(f"There was an error: {e}")
+
+async def fade_out(device_data: dict | None = None, fade_duration: int | float = 5):
+    try:
+        if type(device_data) == dict:
+            print("Custom data is not yet supported.")
+            device_id = None
+
+        if device_data is None:
+            device_data = await api_get_device_data()
+        
+        if not device_data:
             return
         
-        current_volume = devices_response['devices'][0].get('volume_percent', None)
+        current_volume = device_data.get("volume_percent")
+        device_id = device_data.get("id")
         
         if current_volume is None:
             print("Error: failed to get device volume.")
             return
 
         for vol in range(current_volume, -5, -5): 
-            await sp.volume(vol, device_id=device_id)
+            sp.volume(vol, device_id)
             print(vol)
-            time.sleep(fade_duration / 15)  
+            await asyncio.sleep(fade_duration / 15)
+
     except Exception as e:
         print(f"An error occurred during fade-out: {e}")
 
-async def pause(device_id: str|int) -> None:
-    await sp.pause_playback(device_id)
-    print("Paused.")
+
+async def fade_in(device_data: dict | None = None, fade_duration: int | float = 5):
+    try:
+        if type(device_data) == dict:
+            print("Custom data is not yet supported.")
+            device_id = None
+
+        if device_data is None:
+            device_data = await api_get_device_data()
+        
+        if not device_data:
+            print("Error: no control devices.")
+            return
+        
+        current_volume = device_data.get("volume_percent")
+        device_id = device_data.get("id")
+        
+        if current_volume is None:
+            print("Error: failed to get device volume.")
+            return
+
+        for vol in range(current_volume, 96, int(fade_duration)): 
+            sp.volume(vol, device_id)
+            print(vol)
+            await asyncio.sleep(fade_duration / 15)
+
+    except Exception as e:
+        print(f"An error occurred during fade-in: {e}")
 
 
+async def start_playback(device_data: dict | None = None, context_uri: str | None = None, uris: str | list[str] | None = None, offset: None = None, position_ms: None = None) -> None:
+    # https://developer.spotify.com/documentation/web-api/reference/start-a-users-playback
+
+    if isinstance(device_data, dict):
+        print("Custom id is not yet supported.")
+        device_data = None
+
+    if device_data is None:
+        device_data = await api_get_device_data()
+
+    if not device_data:
+        return
+    
+    print(type(uris))
+
+    if isinstance(uris, str):
+        uris = uris.split(" ")
+
+    if isinstance(uris, list):
+        uris.pop(0)
+
+    device_id = device_data.get("id")
+
+    print(uris)
+
+    sp.start_playback(device_id=device_id, context_uri=context_uri, uris=uris, offset=offset, position_ms=position_ms)
+
+async def pause_playback(device_data: dict | None = None) -> None:
+    # https://developer.spotify.com/documentation/web-api/reference/pause-a-users-playback
+
+    if isinstance(device_data, dict):
+        print("Custom id is not yet supported.")
+        device_data = None
+
+    if device_data is None:
+        device_data = await api_get_device_data()
+
+    if not device_data:
+        return
+    
+    device_id = device_data.get("id")
+    is_active = device_data.get("is_active")
+
+    if is_active:
+        sp.pause_playback(device_id)
+    else:
+        print("Device is already paused.")
+
+async def next_track(device_data: dict | None = None) -> None:
+
+    if isinstance(device_data, dict):
+        print("Custom id is not yet supported.")
+        device_data = None
+
+    if device_data is None:
+        device_data = await api_get_device_data()
+
+    if not device_data:
+        return
+    
+    device_id = device_data.get("id")
+
+    sp.next_track(device_id)
+
+async def previous_track(device_data: dict | None = None) -> None:
+
+    if isinstance(device_data, dict):
+        print("Custom id is not yet supported.")
+        device_data = None
+
+    if device_data is None:
+        device_data = await api_get_device_data()
+
+    if not device_data:
+        return
+    
+    device_id = device_data.get("id")
+
+    sp.previous_track(device_id)
+
+async def current_playback() -> None:
+
+    current = sp.current_playback() # returns very large dict, every code bellow is formatting
+    
+    audio_track_type = current["currently_playing_type"] #type: ignore
+
+    if audio_track_type != "track":
+        print("Podcasts are not yet supported by Spotify API.")
+        return
+
+    with open("data.json", "w", encoding="utf-8") as f: # debug
+        import json
+        json.dump(current, f, indent=4)
+
+    if current and current["is_playing"]:
+        name = current["item"]["name"]
+        artists = current["item"]["artists"]
+
+        data = []
+
+        for nums in range(len(artists)):
+            data.append(f"'{artists[nums]["name"]}'")
+        
+        album = current["item"]["album"]["name"]
+        album_type = current["item"]["album"]["album_type"]
+        isExplicit = current["item"]["explicit"]
+        progress = current["progress_ms"]
+        duration = current['item']['duration_ms']
+
+        list_to_str = ', '.join(artist for artist in data)
+        artist = list_to_str
+
+        if album == name:
+            album_type = "single"
+
+        print(f"Currently playing: '{name}' by {artist} {f"from album '{album}'" if album_type != 'single' else ''}")
+        print(f"Album type: {album_type}")
+        print(f"Explicit: {'Yes' if isExplicit else 'No'}")
+        print(f"Progress: {int_to_time(progress, True)} - {int_to_time(duration, True)}")
+
+    else:
+        print("Nothing is playing.")
+    
+async def shuffle(mode: str | bool = "off") -> None:
+    if isinstance(mode, str):
+        if mode.lower() == "on":
+            mode = True
+            print(f"Changed to {mode}")
+        elif mode.lower() == "off":
+            mode = False
+            print(f"Changed to {mode}")
+        else:
+            return
+        sp.shuffle(mode)
+    else:
+        sp.shuffle(bool(mode))
+    
+
+if __name__ == "__main__":
+    print("This file is not meant to be executed. Use console.py")

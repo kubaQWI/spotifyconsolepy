@@ -5,22 +5,34 @@ import asyncio
 
 config = cp.ConfigParser()
 default_config_ini = "./config.ini"
+
 async def ainput(prompt: str) -> str:
     return await asyncio.to_thread(input, f'{prompt}')
 
-def return_config(file_path: str = default_config_ini) -> list: # type: ignore
+def return_config(file_path: str = default_config_ini) -> list: 
     if not Path(file_path).exists():
-        print("ini file does not exist. Creating a new one")
+        print("The config file doesn't exist. Creating new one...")
         first_time()
+        return []
     else:
         config.read(file_path)
 
         # parser
-        user_config_id = config.get("spotify.user", "config_id")
-        user_client_secret = config.get("spotify.user", "client_secret")
-        user_cache_path = config.get("spotify.user", "cache_path")
-        user_device_name = config.get("spotify.user", "device_name")
 
+        try:
+            user_config_id = config.get("spotify.user", "config_id")
+            user_client_secret = config.get("spotify.user", "client_secret")
+            user_cache_path = config.get("spotify.user", "cache_path")
+            user_device_name = config.get("spotify.user", "device_name")
+
+        except cp.NoOptionError:
+            print(f"One of the portions of {file_path} data is broken. Run 'change-ini' to change it.")
+            return []
+
+        except cp.NoSectionError:
+            print(f"There are no spotify user variables in {file_path}. Please provide them in 'change-ini' command.")
+            return []
+        
         data = [user_config_id, user_client_secret, user_cache_path, user_device_name]
 
         return data
@@ -41,7 +53,10 @@ def first_time(file_path: str = default_config_ini) -> None:
         configfile.close()
 
 def change_ini(config_id, client_secret, cache_path, device_name, file_path: str = default_config_ini) -> None:
-    config['spotify.user'] = {
+    ini_path = Path(file_path)
+
+    if ini_path.exists():
+        config['spotify.user'] = {
         "config_id" : config_id,
         "client_secret" : client_secret,
         "redirect_uri" : "http://127.0.0.1:8000/callback",
@@ -49,47 +64,51 @@ def change_ini(config_id, client_secret, cache_path, device_name, file_path: str
         "open_browser" : "False",
         "cache_path" : cache_path,
         "device_name" : device_name
-    }
+        }
 
-    with open(file_path, 'w') as configfile:
-        config.write(configfile)
-        configfile.close()
+        with open(file_path, 'w') as configfile:
+            config.write(configfile)
+            configfile.close()
+
+    else:
+        print("The config file doesn't exist. Creating new one...")
+        first_time()
+
+    return
 
 async def change_input(file_path: str = default_config_ini) -> None:
-    ini_file = Path(file_path)
-
-    if not ini_file.exists():
-        print("ini file does not exist. Creating new one.")
-        first_time()
-    else:
-        while True:
-            config_id = await ainput("Input config_id: ")
-            client_secret = await ainput("Input client_secret: ")
-            cache_path = await ainput("Input cache_path: ")
-            device_name = await ainput("Input device_name: ")
-
-            print(
-                f"\nconfig_id = {config_id}\n" \
-                f"client_secret = {client_secret}\n" \
-                f"cache_path = {cache_path}\n" \
-                f"device_name = {device_name}\n"
-                )
-            choice = await ainput("Are those informations correct? [Y/N]: ")
-
-            if choice.lower() == 'y' or choice.lower() == 't':
-                change_ini(config_id, client_secret, cache_path, device_name)
-                print(f"Successfully saved to {file_path}")
-                break
-            elif choice.lower() == 'n':
-                pass
-            else:
-                print("No input given, breaking")
-                break
     
-async def main():
+    while True:
+        config_id = await ainput("Input config_id: ")
+        client_secret = await ainput("Input client_secret: ")
+        cache_path = await ainput("Input cache_path: ")
+        device_name = await ainput("Input device_name: ")
+
+        print(
+            f"\nconfig_id = {config_id}\n" \
+            f"client_secret = {client_secret}\n" \
+            f"cache_path = {cache_path}\n" \
+            f"device_name = {device_name}\n"
+            )
+        choice = await ainput("Are those informations correct? [Y/N/Q]: ")
+
+        if choice.lower() == 'y' or choice.lower() == 't':
+            change_ini(config_id, client_secret, cache_path, device_name)
+            print(f"Successfully saved to {file_path}")
+            break
+        elif choice.lower() == 'n':
+            pass
+        elif choice.lower() == 'q':
+            print("Quitting without saving...")
+            break
+        else:
+            print(f"'{choice}' is not an option. Type again")
+            continue
+    
+async def main() -> None:
     change_input_ = asyncio.create_task(change_input())
 
-    await change_input_
+    asyncio.gather(change_input_)
 
 if __name__ == "__main__":
     asyncio.run(main())
