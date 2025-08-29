@@ -162,7 +162,6 @@ async def get_input(prompt: str = "? ") -> None:
                     await scmd.fade_out()
                 
                 case "change-ini":
-                    print(config.return_config())
                     await config.change_input()
 
                 case "clear":
@@ -198,5 +197,6 @@ async def main():
     except asyncio.exceptions.CancelledError:
         pass
         
+
 
 asyncio.run(main())
