@@ -79,7 +79,7 @@ def change_ini(config_id, client_secret, cache_path, device_name, file_path: str
 async def change_input(file_path: str = default_config_ini) -> None:
     
     while True:
-        config_id = await ainput("Input config_id: ")
+        config_id = await ainput("Input client_id: ") # i know that is different but i'm too lazy to change every variable name xd
         client_secret = await ainput("Input client_secret: ")
         cache_path = await ainput("Input cache_path: ")
         device_name = await ainput("Input device_name: ")
@@ -108,7 +108,7 @@ async def change_input(file_path: str = default_config_ini) -> None:
 async def main() -> None:
     change_input_ = asyncio.create_task(change_input())
 
-    asyncio.gather(change_input_)
+    await change_input_
 
 if __name__ == "__main__":
     asyncio.run(main())

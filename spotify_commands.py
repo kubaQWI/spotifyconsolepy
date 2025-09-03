@@ -2,6 +2,8 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import asyncio
 import time
+import json
+import os
 
 import config
 
@@ -14,6 +16,28 @@ import config
 
 config_data = config.return_config()
 
+def notify(cache_path: str | None = config_data[2]) -> None:
+    if cache_path is None:
+        return
+
+    with open(cache_path, 'r') as cache:
+        try:
+            data = json.loads(cache.read())
+        except Exception as e:
+            print(f"There was an error: {e}")
+            return
+        
+        if not data:
+            return
+        
+        exp = data.get("expires_at")
+        import datetime
+
+        dt = datetime.datetime.fromtimestamp(exp, tz=datetime.timezone.utc)
+        print(f"Remember that OAuth token refreshes at {dt.strftime("%H:%M:%S UTC on %B %#d, %Y")}" if os.name == 'nt' else f"Remember that OAuth token refreshes at {dt.strftime("%H:%M:%S UTC on %B %-d, %Y")}" )
+
+        cache.close()
+
 def init():
 
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
@@ -24,6 +48,8 @@ def init():
     open_browser=False,
     cache_path=config_data[2]
     ))
+
+    notify()
     
     return sp
 
@@ -34,7 +60,7 @@ else:
     allowed = True
 
     for index, key in enumerate(config_data): # check if variables are empty, if true set it as None.
-        if not key:
+        if not key or key in " ":
             config_data[index] = None
             allowed = False
         else:
@@ -71,7 +97,7 @@ async def api_get_device_data(device: str | None = config_data[3], print_all_dev
         return {}
 
     if not api_get_devices:
-        print("No devices found")
+        print("No active devices")
         return {}
 
     if print_all_devices:
@@ -264,6 +290,10 @@ async def previous_track(device_data: dict | None = None) -> None:
 async def current_playback() -> None:
 
     current = sp.current_playback() # returns very large dict, every code bellow is formatting
+
+    if not current:
+        print("No active devices")
+        return
     
     audio_track_type = current["currently_playing_type"] #type: ignore
 
@@ -272,7 +302,6 @@ async def current_playback() -> None:
         return
 
     with open("data.json", "w", encoding="utf-8") as f: # debug
-        import json
         json.dump(current, f, indent=4)
 
     if current and current["is_playing"]:
@@ -304,7 +333,15 @@ async def current_playback() -> None:
     else:
         print("Nothing is playing.")
     
-async def shuffle(mode: str | bool = "off") -> None:
+async def shuffle(mode: str | bool = "off", device_id: str | None = None) -> None:
+    if device_id is None:
+        device_data = await api_get_device_data()
+
+        if not device_data:
+            return
+        
+        device_id = device_data.get("id")
+
     if isinstance(mode, str):
         if mode.lower() == "on":
             mode = True
@@ -317,7 +354,31 @@ async def shuffle(mode: str | bool = "off") -> None:
         sp.shuffle(mode)
     else:
         sp.shuffle(bool(mode))
+
+async def repeat(mode: str = "off", device_id: str | None = None) -> None:
+    if device_id is None:
+        device_data = await api_get_device_data()
+
+        if not device_data:
+            return
+        
+        device_id = device_data.get("id")
     
+    if isinstance(mode, str):
+        if mode.lower() == "track":
+            sp.repeat(mode, device_id)
+            return
+        elif mode.lower() == "context":
+            sp.repeat(mode, device_id)
+            return
+        else:
+            print("Invalid option")
+            return
+    return
+
+async def queue(device_id: )
+
+
 
 if __name__ == "__main__":
     print("This file is not meant to be executed. Use console.py")

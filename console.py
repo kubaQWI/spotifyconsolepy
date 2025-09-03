@@ -2,8 +2,6 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import asyncio
-import sys
-import signal
 
 import config
 import spotify_commands as scmd
@@ -46,13 +44,12 @@ async def get_input(prompt: str = "? ") -> None:
             continue
 
         cmd = args[0]
-        argstr = " ".join(args[1:])
+        #argstr = " ".join(args[1:]) < don't know where is used xd, gotta leave that...
 
         if cmd in commands:
             pass
 
         else:
-            print(f"{cmd}")
             cmd = None
         
         """
@@ -99,12 +96,10 @@ async def get_input(prompt: str = "? ") -> None:
                         raise IndexError
 
                 case "repeat": # TODO
-                    """
-                    if len(args) > 1:
+                    if len(args) > 1 and len(args) < 3:
                         await scmd.repeat(args[1].lower())
                     else:
                         raise IndexError
-                    """
                         
                 case "devices":
                     if len(args) == 1:
@@ -144,7 +139,9 @@ async def get_input(prompt: str = "? ") -> None:
                         raise IndexError
                     
                 case "queue":
-                    print("Spotify Web API does not support retrieving the queue. Use your client.")
+                    #print("Spotify Web API does not support retrieving the queue. Use your client.")
+                    
+                    
 
                 case "addqueue": # TODO
                     """
@@ -197,6 +194,5 @@ async def main():
     except asyncio.exceptions.CancelledError:
         pass
         
-
 
 asyncio.run(main())
