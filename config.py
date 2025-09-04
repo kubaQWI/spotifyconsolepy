@@ -2,6 +2,7 @@
 import configparser as cp
 from pathlib import Path
 import asyncio
+import os
 
 config = cp.ConfigParser()
 default_config_ini = "./config.ini"
@@ -18,7 +19,6 @@ def return_config(file_path: str = default_config_ini) -> list:
         config.read(file_path)
 
         # parser
-
         try:
             user_config_id = config.get("spotify.user", "config_id")
             user_client_secret = config.get("spotify.user", "client_secret")
@@ -45,7 +45,8 @@ def first_time(file_path: str = default_config_ini) -> None:
         "scope" : "user-modify-playback-state user-read-playback-state",
         "open_browser" : "False",
         "cache_path" : "None",
-        "device_name" : "None"
+        "device_name" : "None",
+        "os" : f"{os.name}"
     }
 
     with open(file_path, 'w') as configfile:
