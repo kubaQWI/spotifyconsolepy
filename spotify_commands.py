@@ -16,28 +16,6 @@ import config
 
 config_data = config.return_config()
 
-def notify(cache_path: str | None = config_data[2]) -> None:
-    if cache_path is None:
-        return
-
-    with open(cache_path, 'r') as cache:
-        try:
-            data = json.loads(cache.read())
-        except Exception as e:
-            print(f"There was an error: {e}")
-            return
-        
-        if not data:
-            return
-        
-        exp = data.get("expires_at")
-        import datetime
-
-        dt = datetime.datetime.fromtimestamp(exp, tz=datetime.timezone.utc)
-        print(f"Remember that OAuth token refreshes at {dt.strftime("%H:%M:%S UTC on %B %#d, %Y")}" if os.name == 'nt' else f"Remember that OAuth token refreshes at {dt.strftime("%H:%M:%S UTC on %B %-d, %Y")}" )
-
-        cache.close()
-
 def init():
 
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
@@ -49,7 +27,7 @@ def init():
     cache_path=config_data[2]
     ))
 
-    notify()
+    # notify()
     
     return sp
 
@@ -71,7 +49,7 @@ else:
         config_data = [None, None, None, None]
     else:
         sp = init()
-
+global device_name
 device_name = config_data[3]
 
 def int_to_time(value: int | float, is_ms: bool = True) -> str:
@@ -103,6 +81,8 @@ async def api_get_device_data(device: str | None = config_data[3], print_all_dev
     if print_all_devices:
         for index, key in enumerate(api_get_devices):
             print(f"{index + 1}: Name: {key['name']}, ID: {key['id']}, Is active: {key['is_active']}, Is restricted: {key['is_restricted']}, Type: {key['type']}")
+        
+        return
 
     data = {}
 
@@ -177,7 +157,6 @@ async def fade_out(device_data: dict | None = None, fade_duration: int | float =
     except Exception as e:
         print(f"An error occurred during fade-out: {e}")
 
-
 async def fade_in(device_data: dict | None = None, fade_duration: int | float = 5):
     try:
         if type(device_data) == dict:
@@ -198,7 +177,7 @@ async def fade_in(device_data: dict | None = None, fade_duration: int | float = 
             print("Error: failed to get device volume.")
             return
 
-        for vol in range(current_volume, 96, int(fade_duration)): 
+        for vol in range(current_volume, 101, int(fade_duration)): 
             sp.volume(vol, device_id)
             print(vol)
             await asyncio.sleep(fade_duration / 15)
@@ -206,9 +185,10 @@ async def fade_in(device_data: dict | None = None, fade_duration: int | float = 
     except Exception as e:
         print(f"An error occurred during fade-in: {e}")
 
-
 async def start_playback(device_data: dict | None = None, context_uri: str | None = None, uris: str | list[str] | None = None, offset: None = None, position_ms: None = None) -> None:
     # https://developer.spotify.com/documentation/web-api/reference/start-a-users-playback
+
+    data = []
 
     if isinstance(device_data, dict):
         print("Custom id is not yet supported.")
@@ -219,20 +199,31 @@ async def start_playback(device_data: dict | None = None, context_uri: str | Non
 
     if not device_data:
         return
-    
-    print(type(uris))
 
     if isinstance(uris, str):
         uris = uris.split(" ")
 
     if isinstance(uris, list):
-        uris.pop(0)
+        data = uris[:]
+        uri_none = True
+        try:
+            for i, u in enumerate(uris):
+                if "playuri" in u and uri_none:
+                    data.remove(u)
+                    uri_none = False
+
+                elif "spotify:track:" not in u and not uri_none:
+                    print("Wrong uri.")
+                    return
+        except Exception as e:
+            print(f"There was an error {e}")
+            return
+
 
     device_id = device_data.get("id")
+    print(device_id)
 
-    print(uris)
-
-    sp.start_playback(device_id=device_id, context_uri=context_uri, uris=uris, offset=offset, position_ms=position_ms)
+    sp.start_playback(device_id=device_id, context_uri=context_uri, uris=data if data else None, offset=offset, position_ms=position_ms)
 
 async def pause_playback(device_data: dict | None = None) -> None:
     # https://developer.spotify.com/documentation/web-api/reference/pause-a-users-playback
@@ -292,7 +283,7 @@ async def current_playback() -> None:
     current = sp.current_playback() # returns very large dict, every code bellow is formatting
 
     if not current:
-        print("No active devices")
+        print("Nothing playing.")
         return
     
     audio_track_type = current["currently_playing_type"] #type: ignore
@@ -343,6 +334,9 @@ async def shuffle(mode: str | bool = "off", device_id: str | None = None) -> Non
         device_id = device_data.get("id")
 
     if isinstance(mode, str):
+        if mode.lower() == "true" or mode.lower() == "false":
+            sp.shuffle(bool(mode))    
+        
         if mode.lower() == "on":
             mode = True
             print(f"Changed to {mode}")
@@ -350,9 +344,12 @@ async def shuffle(mode: str | bool = "off", device_id: str | None = None) -> Non
             mode = False
             print(f"Changed to {mode}")
         else:
+            print("Invalid argument")
             return
+
         sp.shuffle(mode)
     else:
+
         sp.shuffle(bool(mode))
 
 async def repeat(mode: str = "off", device_id: str | None = None) -> None:
@@ -366,19 +363,26 @@ async def repeat(mode: str = "off", device_id: str | None = None) -> None:
     
     if isinstance(mode, str):
         if mode.lower() == "track":
+            print(f"Changed repeat mode to {mode}")
             sp.repeat(mode, device_id)
             return
+
         elif mode.lower() == "context":
+            print(f"Changed repeat mode to {mode}")
             sp.repeat(mode, device_id)
             return
+
+        elif mode.lower() == "off":
+            print(f"Changed repeat mode to {mode}")
+            sp.repeat(mode, device_id)
+
         else:
             print("Invalid option")
             return
+
     return
 
-async def queue(device_id: )
-
-
+# async def queue(device_id: )
 
 if __name__ == "__main__":
     print("This file is not meant to be executed. Use console.py")
