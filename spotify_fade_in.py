@@ -8,13 +8,16 @@ import config
 # init
 data = config.return_config()
 
+if not data:
+    print("ini file is broken")
+    exit(1)
+
 """
 data[0] - config_id
 data[1] - client_secret
 data[2] - cache_path
 data[3] - device_name
 """
-
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     client_id=data[0],
@@ -41,11 +44,12 @@ def fade_in(device_id, fade_duration: int = 5) -> None:
 
         if current_volume == None:
             print("Failed to get device volume.")
+            return
 
         print(f"Current volume: {current_volume}")
 
         for volume in range(current_volume, 96, int(fade_duration)):
-            sp.volume(volume, device_id) # << assume that it works (i dont have premium xd) decomment this when you will test it out
+            sp.volume(volume, device_id)
             print(f"Vol: {volume}")
             time.sleep(fade_duration / 10)
 

@@ -8,6 +8,10 @@ import config
 # init
 data = config.return_config()
 
+if not data:
+    print("ini file is broken")
+    exit(1)
+
 """
 "   data[0] - config_id
 "   data[1] - client_secret
@@ -45,7 +49,7 @@ def fade_out(device_id, fade_duration=5):
         for vol in range(current_volume, -5, -5): 
             sp.volume(vol, device_id=device_id)
             print(vol)
-            time.sleep(fade_duration / 15)  
+            time.sleep(fade_duration / 15)
     except Exception as e:
         print(f"An error occurred during fade-out: {e}")
 

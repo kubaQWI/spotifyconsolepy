@@ -139,8 +139,7 @@ async def get_input(prompt: str = "? ") -> None:
                         raise IndexError
                     
                 case "queue":
-                    #print("Spotify Web API does not support retrieving the queue. Use your client.")
-                    
+                    print("Spotify Web API does not support retrieving the queue. Use your client.")
                     
 
                 case "addqueue": # TODO
@@ -151,6 +150,7 @@ async def get_input(prompt: str = "? ") -> None:
                     else:
                         raise IndexError
                     """
+                    print("a")
                 
                 case "fade-in":
                     await scmd.fade_in()
@@ -177,10 +177,11 @@ async def get_input(prompt: str = "? ") -> None:
 
         except IndexError:
             for Left, Right in commands.items():
-                if cmd in Left: # type: ignore
+                if cmd in Left:
                     print(f"Usage: {Left} - {Right}")
 
-        except NameError:
+        except NameError as e:
+            print(f"{e}")
             print("All spotify related functions are disabled.")
             
         except Exception as e:
@@ -193,6 +194,5 @@ async def main():
         await asyncio.gather(task_, return_exceptions=True)
     except asyncio.exceptions.CancelledError:
         pass
-        
 
 asyncio.run(main())
