@@ -299,7 +299,7 @@ async def current_playback() -> None:
         data = []
 
         for nums in range(len(artists)):
-            data.append(f"'{artists[nums]["name"]}'")
+            data.append(f'"{artists[nums]["name"]}"')
         
         album = current["item"]["album"]["name"]
         album_type = current["item"]["album"]["album_type"]
@@ -313,10 +313,10 @@ async def current_playback() -> None:
         if album == name:
             album_type = "single"
 
-        print(f"Currently playing: '{name}' by {artist} {f"from album '{album}'" if album_type != 'single' else ''}")
-        print(f"Album type: {album_type}")
-        print(f"Explicit: {'Yes' if isExplicit else 'No'}")
-        print(f"Progress: {int_to_time(progress, True)} - {int_to_time(duration, True)}")
+        print(f'Currently playing: "{name}" by {artist} {"from album " + album if album_type != "single" else ""}')
+        print(f'Album type: {album_type}')
+        print(f'Explicit: {"Yes" if isExplicit else "No"}')
+        print(f'Progress: {int_to_time(progress, True)} - {int_to_time(duration, True)}')
 
     else:
         print("Nothing is playing.")
