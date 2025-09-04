@@ -53,7 +53,7 @@ def first_time(file_path: str = default_config_ini) -> None:
         config.write(configfile)
         configfile.close()
 
-def change_ini(config_id, client_secret, cache_path, device_name, file_path: str = default_config_ini) -> None:
+def change_ini(config_id, client_secret, cache_path, device_name, file_path: str = default_config_ini, osname: str = os.name) -> None:
     ini_path = Path(file_path)
 
     if ini_path.exists():
@@ -64,7 +64,8 @@ def change_ini(config_id, client_secret, cache_path, device_name, file_path: str
         "scope" : "user-modify-playback-state user-read-playback-state",
         "open_browser" : "False",
         "cache_path" : cache_path,
-        "device_name" : device_name
+        "device_name" : device_name,
+        "os" : f"{osname}"
         }
 
         with open(file_path, 'w') as configfile:

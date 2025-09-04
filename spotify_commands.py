@@ -26,14 +26,12 @@ def init():
     open_browser=False,
     cache_path=config_data[2]
     ))
-
-    # notify()
     
     return sp
 
 if not config_data:
     print("Check if config data is correct. All spotify related functions are disabled.")
-    config_data = [None, None, None, None]
+    config_data = [None, None, None, None, None]
 else:
     allowed = True
 
@@ -46,7 +44,7 @@ else:
     
     if not allowed:
         print("Check if config data is correct. All spotify related functions are disabled.")
-        config_data = [None, None, None, None]
+        config_data = [None, None, None, None, None]
     else:
         sp = init()
 
@@ -382,7 +380,13 @@ async def repeat(mode: str = "off", device_id: str | None = None) -> None:
 
     return
 
-# async def queue(device_id: )
+async def queue(device_id: str | None) -> None:
+    if device_id is None:
+        device_data = await api_get_device_data()
+
+        if not device_data:
+            return
+    
 
 if __name__ == "__main__":
     print("This file is not meant to be executed. Use console.py")
