@@ -80,7 +80,6 @@ async def api_get_device_data(device: str | None = config_data[3], print_all_dev
     if print_all_devices:
         for index, key in enumerate(api_get_devices):
             print(f"{index + 1}: Name: {key['name']}, ID: {key['id']}, Is active: {key['is_active']}, Is restricted: {key['is_restricted']}, Type: {key['type']}")
-        
         return
 
     data = {}
