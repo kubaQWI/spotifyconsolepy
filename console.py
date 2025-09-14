@@ -195,4 +195,11 @@ async def main():
     except asyncio.exceptions.CancelledError:
         pass
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
+
+
+"""
+"   Made with <3 by kubaQWI and cement for ZSTiO Radiowęzeł Automated Music System using Spotify API
+"   https://github.com/kubaQWI/spotifyconsolepy
+"""

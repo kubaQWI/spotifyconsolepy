@@ -31,7 +31,7 @@ def init():
 
 if not config_data:
     print("Check if config data is correct. All spotify related functions are disabled.")
-    config_data = [None, None, None, None, None]
+    config_data = [None, None, None, None]
 else:
     allowed = True
 
@@ -44,7 +44,7 @@ else:
     
     if not allowed:
         print("Check if config data is correct. All spotify related functions are disabled.")
-        config_data = [None, None, None, None, None]
+        config_data = [None, None, None, None]
     else:
         sp = init()
 
@@ -389,3 +389,9 @@ async def queue(device_id: str | None) -> None:
 
 if __name__ == "__main__":
     print("This file is not meant to be executed. Use console.py")
+
+
+"""
+"   Made with <3 by kubaQWI and cement for ZSTiO Radiowęzeł Automated Music System using Spotify API
+"   https://github.com/kubaQWI/spotifyconsolepy
+"""

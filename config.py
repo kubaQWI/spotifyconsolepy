@@ -3,22 +3,28 @@ import configparser as cp
 from pathlib import Path
 import asyncio
 import os
+import getpass
 
 config = cp.ConfigParser()
-default_config_ini = "./config.ini"
+default_config_ini = "./config.ini" if os.name == "nt" else f"/home/{getpass.getuser()}/spotipyconsole/config.ini"
 
 async def ainput(prompt: str) -> str:
     return await asyncio.to_thread(input, f'{prompt}')
 
 def return_config(file_path: str = default_config_ini) -> list: 
-    if not Path(file_path).exists():
+    if not os.path.exists(file_path):
         print("The config file doesn't exist. Creating new one...")
-        first_time()
+        if os.name == 'nt':
+            first_time()
+        else:
+            first_time(is_nt = False)
         return []
+
     else:
         config.read(file_path)
 
         # parser
+
         try:
             user_config_id = config.get("spotify.user", "config_id")
             user_client_secret = config.get("spotify.user", "client_secret")
@@ -37,23 +43,30 @@ def return_config(file_path: str = default_config_ini) -> list:
 
         return data
             
-def first_time(file_path: str = default_config_ini) -> None:
-    config['spotify.default'] = {
+def first_time(file_path: str = default_config_ini, is_nt: bool = True) -> None:
+    config['spotify.user'] = {
         "config_id" : "None",
         "client_secret" : "None",
         "redirect_uri" : "http://127.0.0.1:8000/callback",
         "scope" : "user-modify-playback-state user-read-playback-state",
         "open_browser" : "False",
         "cache_path" : "None",
-        "device_name" : "None",
-        "os" : f"{os.name}"
+        "device_name" : "None"
     }
+    if is_nt:
+        pass
+    else:
+        if os.path.exists(f"/home/{getpass.getuser()}/spotipyconsole/"):
+            pass
 
+        else:
+            os.makedirs(f"/home/{getpass.getuser()}/spotipyconsole/", mode = 755)
+    
     with open(file_path, 'w') as configfile:
         config.write(configfile)
         configfile.close()
 
-def change_ini(config_id, client_secret, cache_path, device_name, file_path: str = default_config_ini, osname: str = os.name) -> None:
+def change_ini(config_id, client_secret, cache_path, device_name, file_path: str = default_config_ini) -> None:
     ini_path = Path(file_path)
 
     if ini_path.exists():
@@ -64,8 +77,7 @@ def change_ini(config_id, client_secret, cache_path, device_name, file_path: str
         "scope" : "user-modify-playback-state user-read-playback-state",
         "open_browser" : "False",
         "cache_path" : cache_path,
-        "device_name" : device_name,
-        "os" : f"{osname}"
+        "device_name" : device_name
         }
 
         with open(file_path, 'w') as configfile:
@@ -74,7 +86,7 @@ def change_ini(config_id, client_secret, cache_path, device_name, file_path: str
 
     else:
         print("The config file doesn't exist. Creating new one...")
-        first_time()
+        first_time(is_nt = True if os.name == "nt" else False)
 
     return
 
@@ -114,3 +126,9 @@ async def main() -> None:
 
 if __name__ == "__main__":
     asyncio.run(main())
+
+
+"""
+"   Made with <3 by kubaQWI and cement for ZSTiO Radiowęzeł Automated Music System using Spotify API
+"   https://github.com/kubaQWI/spotifyconsolepy
+"""
