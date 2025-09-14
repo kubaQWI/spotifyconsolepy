@@ -50,7 +50,7 @@ async def get_input(prompt: str = "? ") -> None:
             pass
 
         else:
-            cmd = None
+            cmd = ""
         
         """
         "   I have to set every case to await in case of some action to not hold traffic
@@ -172,7 +172,7 @@ async def get_input(prompt: str = "? ") -> None:
                     print("Exiting...")
                     return
 
-                case None:
+                case "":
                     print(f"There is no command such as '{line}'. Type 'help' for more info.")
 
         except IndexError:

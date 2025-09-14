@@ -1,16 +1,18 @@
 #!/usr/bin/env python
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-import time
+import spotify_commands as scmd
+import asyncio
 
 import config
-
+"""
 # init
 data = config.return_config()
 
 if not data:
     print("ini file is broken")
     exit(1)
+"""
 
 """
 "   data[0] - config_id
@@ -18,8 +20,7 @@ if not data:
 "   data[2] - cache_path
 "   data[3] - device_name
 """
-
-
+"""
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     client_id=data[0],
     client_secret=data[1],
@@ -31,7 +32,8 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 
 user = sp.current_user()
 device_name = data[3]
-
+"""
+"""
 def fade_out(device_id, fade_duration=5):
     try:
         devices_response = sp.devices()
@@ -52,18 +54,11 @@ def fade_out(device_id, fade_duration=5):
             time.sleep(fade_duration / 15)
     except Exception as e:
         print(f"An error occurred during fade-out: {e}")
+"""
+async def main() -> None:
+    fade_out_ = asyncio.create_task(scmd.fade_out())
 
-try:
-    devices = sp.devices()['devices']
-    target_device = None
-    for d in devices:
-        if d['name'].lower() == device_name.lower():
-            target_device = d
-            break
+    await fade_out_
 
-    if target_device:
-        fade_out(target_device['id'], fade_duration=5)
-    else:
-        print(f"Device not found: '{device_name}'")
-except Exception as e:
-    print(f"An error occurred while obtaining devices: {e}")
+if __name__ == "__main__":
+    asyncio.run(main())

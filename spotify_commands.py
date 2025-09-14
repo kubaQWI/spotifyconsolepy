@@ -26,14 +26,12 @@ def init():
     open_browser=False,
     cache_path=config_data[2]
     ))
-
-    # notify()
     
     return sp
 
 if not config_data:
     print("Check if config data is correct. All spotify related functions are disabled.")
-    config_data = [None, None, None, None]
+    config_data = [None, None, None, None, None]
 else:
     allowed = True
 
@@ -46,9 +44,10 @@ else:
     
     if not allowed:
         print("Check if config data is correct. All spotify related functions are disabled.")
-        config_data = [None, None, None, None]
+        config_data = [None, None, None, None, None]
     else:
         sp = init()
+
 global device_name
 device_name = config_data[3]
 
@@ -81,7 +80,6 @@ async def api_get_device_data(device: str | None = config_data[3], print_all_dev
     if print_all_devices:
         for index, key in enumerate(api_get_devices):
             print(f"{index + 1}: Name: {key['name']}, ID: {key['id']}, Is active: {key['is_active']}, Is restricted: {key['is_restricted']}, Type: {key['type']}")
-        
         return
 
     data = {}
@@ -221,7 +219,6 @@ async def start_playback(device_data: dict | None = None, context_uri: str | Non
 
 
     device_id = device_data.get("id")
-    print(device_id)
 
     sp.start_playback(device_id=device_id, context_uri=context_uri, uris=data if data else None, offset=offset, position_ms=position_ms)
 
@@ -302,7 +299,7 @@ async def current_playback() -> None:
         data = []
 
         for nums in range(len(artists)):
-            data.append(f"'{artists[nums]["name"]}'")
+            data.append(f'"{artists[nums]["name"]}"')
         
         album = current["item"]["album"]["name"]
         album_type = current["item"]["album"]["album_type"]
@@ -316,10 +313,10 @@ async def current_playback() -> None:
         if album == name:
             album_type = "single"
 
-        print(f"Currently playing: '{name}' by {artist} {f"from album '{album}'" if album_type != 'single' else ''}")
-        print(f"Album type: {album_type}")
-        print(f"Explicit: {'Yes' if isExplicit else 'No'}")
-        print(f"Progress: {int_to_time(progress, True)} - {int_to_time(duration, True)}")
+        print(f'Currently playing: "{name}" by {artist} {"from album " + album if album_type != "single" else ""}')
+        print(f'Album type: {album_type}')
+        print(f'Explicit: {"Yes" if isExplicit else "No"}')
+        print(f'Progress: {int_to_time(progress, True)} - {int_to_time(duration, True)}')
 
     else:
         print("Nothing is playing.")
@@ -379,10 +376,15 @@ async def repeat(mode: str = "off", device_id: str | None = None) -> None:
         else:
             print("Invalid option")
             return
-
+          
     return
 
-# async def queue(device_id: )
+async def queue(device_id: str | None) -> None:
+    if device_id is None:
+        device_data = await api_get_device_data()
 
+        if not device_data:
+            return
+    
 if __name__ == "__main__":
     print("This file is not meant to be executed. Use console.py")
