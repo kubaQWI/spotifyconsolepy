@@ -376,7 +376,7 @@ async def repeat(mode: str = "off", device_id: str | None = None) -> None:
         else:
             print("Invalid option")
             return
-
+          
     return
 
 async def queue(device_id: str | None) -> None:
@@ -386,6 +386,5 @@ async def queue(device_id: str | None) -> None:
         if not device_data:
             return
     
-
 if __name__ == "__main__":
     print("This file is not meant to be executed. Use console.py")

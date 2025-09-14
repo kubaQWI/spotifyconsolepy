@@ -82,7 +82,7 @@ async def get_input(prompt: str = "? ") -> None:
                     await scmd.current_playback()
                     
                 case "volume":
-                    if len(args) > 1:
+                    if len(args) > 1 and len(args) < 3:
                         volume = int(args[1])
                         await scmd.set_volume(volume=volume)
                     else:
