@@ -23,9 +23,7 @@ def return_config(file_path: str = default_config_ini) -> list:
     else:
         config.read(file_path)
 
-        # parser
-
-        try:
+        try: # parser
             user_config_id = config.get("spotify.user", "config_id")
             user_client_secret = config.get("spotify.user", "client_secret")
             user_cache_path = config.get("spotify.user", "cache_path")
@@ -45,14 +43,15 @@ def return_config(file_path: str = default_config_ini) -> list:
             
 def first_time(file_path: str = default_config_ini, is_nt: bool = True) -> None:
     config['spotify.user'] = {
-        "config_id" : "None",
-        "client_secret" : "None",
+        "config_id" : "",
+        "client_secret" : "",
         "redirect_uri" : "http://127.0.0.1:8000/callback",
         "scope" : "user-modify-playback-state user-read-playback-state",
-        "open_browser" : "False",
-        "cache_path" : "None",
-        "device_name" : "None"
+        "open_browser" : "",
+        "cache_path" : "",
+        "device_name" : ""
     }
+
     if is_nt:
         pass
     else:
@@ -60,7 +59,7 @@ def first_time(file_path: str = default_config_ini, is_nt: bool = True) -> None:
             pass
 
         else:
-            os.makedirs(f"/home/{getpass.getuser()}/spotipyconsole/", mode = 755)
+            os.makedirs(f"/home/{getpass.getuser()}/spotipyconsole/", mode = 1775)
     
     with open(file_path, 'w') as configfile:
         config.write(configfile)
