@@ -3,7 +3,6 @@ from spotipy.oauth2 import SpotifyOAuth
 import asyncio
 import time
 import json
-import os
 
 import config
 
@@ -31,7 +30,7 @@ def init():
 
 if not config_data:
     print("Check if config data is correct. All spotify related functions are disabled.")
-    config_data = [None, None, None, None, None]
+    config_data = [None, None, None, None]
 else:
     allowed = True
 
@@ -44,7 +43,7 @@ else:
     
     if not allowed:
         print("Check if config data is correct. All spotify related functions are disabled.")
-        config_data = [None, None, None, None, None]
+        config_data = [None, None, None, None]
     else:
         sp = init()
 
@@ -59,7 +58,8 @@ def int_to_time(value: int | float, is_ms: bool = True) -> str:
 
     if value >= 3600: # value in seconds*
         timestamp = time.strftime("%H:%M:%S", time.gmtime(value))
-
+    elif value >= 86400: # how would you even get that song on spotify???
+        timestamp = time.strftime("%d:%H:%M:%S", time.gmtime(value))
     else:
         timestamp = time.strftime("%M:%S", time.gmtime(value))
 
@@ -104,6 +104,8 @@ async def api_get_device_data(device: str | None = config_data[3], print_all_dev
             for l, r in key.items():
                 if 'name' in l and device.lower() in r.lower():
                     data.update(key)
+                elif 'name' in l and "Web Player" in r:
+                    print("Please do not use open.spotify.com as a player.")
 
     except Exception as e:
         print(f"There was a problem: {e}")
@@ -288,10 +290,10 @@ async def current_playback() -> None:
     if audio_track_type != "track":
         print("Podcasts are not yet supported by Spotify API.")
         return
-
+    """
     with open("data.json", "w", encoding="utf-8") as f: # debug
         json.dump(current, f, indent=4)
-
+    """
     if current and current["is_playing"]:
         name = current["item"]["name"]
         artists = current["item"]["artists"]
@@ -379,12 +381,95 @@ async def repeat(mode: str = "off", device_id: str | None = None) -> None:
           
     return
 
-async def queue(device_id: str | None) -> None:
+async def queue(): # for now only reading queue, later i will add more fun functions :3
+    sp_data = sp.queue()
+
+    if not sp_data:
+        print("No data")
+        return
+
+    def remove_keys(obj, keys_to_remove): # spooky! (even i don't understand it dw)
+        if isinstance(obj, dict):
+            return {k: remove_keys(v, keys_to_remove) for k, v in obj.items() if k not in keys_to_remove}
+        elif isinstance(obj, list):
+            return [remove_keys(i, keys_to_remove) for i in obj]
+        else:
+            return obj
+
+    data = remove_keys(sp_data, {"available_markets", 
+                                "images", 
+                                "currently_playing", 
+                                "external_ids", 
+                                "external_urls", 
+                                "disc_number", 
+                                "track_number", 
+                                "total_tracks", 
+                                "popularity",
+                                "preview_url",
+                                "href",
+                                "release_date",
+                                "release_date_precision"})
+    
+    with open('queue.json', 'w') as que:
+        json.dump(data, que, indent=4)
+
+    if not data:
+        return
+
+    if not isinstance(data, dict):
+        return
+
+    sp_queue = data.get("queue")
+
+    if not isinstance(sp_queue, list):
+        print(sp_queue)
+        return
+
+    for index, item in enumerate(sp_queue, start=1):
+        if not isinstance(item, dict):
+            continue
+        
+        artists = item.get("artists", [])
+        album = item.get("album", {})
+        title = item.get("name")
+        is_explicit = item.get("explicit")
+        album_type = item.get("album_type")
+        duration_ms = item.get("duration_ms")
+        duration = ""
+
+        if not isinstance(duration_ms, int):
+            pass
+        else:
+            duration = int_to_time(duration_ms, True)
+
+        artists_list = [f'"{a["name"]}"' for a in artists]
+        artist_str = ", ".join(artists_list)
+
+        album_str = f' from album "{album.get("name")}"' if album_type != "single" else ""
+
+        print(f'{index} : {title} by {artist_str}{album_str}, explicit: {is_explicit}, duration: {"No data" if not duration else duration}\n')
+
+async def add_to_queue(uri: str, device_id: str | None = None) -> None:
     if device_id is None:
         device_data = await api_get_device_data()
 
         if not device_data:
             return
-    
+        
+        device_id = device_data.get("id")
+
+        if "spotify:track" not in uri:
+            print("Not a URI")
+            return
+        
+    print("Added URI to queue")
+    sp.add_to_queue(uri, device_id)
+
 if __name__ == "__main__":
     print("This file is not meant to be executed. Use console.py")
+
+
+"""
+"   Made with <3 by kubaQWI and cement for ZSTiO Radiowęzeł Automated Music System using Spotify API
+"   https://github.com/kubaQWI/spotifyconsolepy
+"""

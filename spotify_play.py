@@ -42,16 +42,6 @@ def set_volume(device_id, volume_percent=0):
     except Exception as e:
         print(f"Error setting volume: {e}")
 
-def activate_device(device_id):
-    print("Activating device...")
-    silence_uri = 'spotify:track:0EZMXJMWf0tLKRWwCiA6Sx'
-    try:
-        sp.start_playback(device_id=device_id, uris=[silence_uri])
-        time.sleep(1)
-        sp.pause_playback(device_id=device_id)
-    except Exception as e:
-        print(f"Activating device failed: {e}")
-
 def start_playlist(device_id):
     playlist = sp.playlist_tracks(playlist_uri)
     tracks = playlist['items']
@@ -118,7 +108,12 @@ if not target_device:
     print(f"Device not found: {device_name}")
     exit()
 
-activate_device(target_device['id'])
 set_volume(target_device['id'])
 start_playlist(target_device['id'])
 monitor_playback(target_device['id'])
+
+
+"""
+"   Made with <3 by kubaQWI and cement for ZSTiO Radiowęzeł Automated Music System using Spotify API
+"   https://github.com/kubaQWI/spotifyconsolepy
+"""

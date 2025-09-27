@@ -12,26 +12,27 @@ async def ainput(prompt: str) -> str:
 async def get_input(prompt: str = "? ") -> None:
 
     commands = {
-        "help" : "Displays this message",
-        "play": "Start/resume playback",
-        "pause": "Pause playback",
-        "next": "Skip to next track",
-        "previous": "Skip to previous track",
-        "current": "Show currently playing track",
-        "volume": "[0-100] | Set volume to a given percentage",
-        "shuffle": "[on/off] | Turn shuffle mode on or off",
-        "repeat": "[off|track|context] | Set repeat mode",
-        "devices": "List available devices",
-        "transfer": "[device_name] | Transfer playback to another device",
-        "search": "[query] | Search for a track",
-        "playuri": "[spotify:track:URI] | Play a specific track by URI",
-        "queue": "Show playback queue",
-        "addqueue": "[spotify:track:URI] | Add track to queue",
-        "fade-in": "Initializes fade in action",
-        "fade-out": "Initializes fade out action",
-        "change-ini": "Changes config.ini file",
-        "clear": "Clears history of a terminal",
-        "exit": "Exit the program"
+        "help"      :   "Displays this message",
+        "play"      :   "Start/resume playback",
+        "pause"     :   "Pause playback",
+        "next"      :   "Skip to next track",
+        "previous"  :   "Skip to previous track",
+        "current"   :   "Show currently playing track",
+        "volume"    :   "[0-100] | Set volume to a given percentage",
+        "shuffle"   :   "[on/off] | Turn shuffle mode on or off",
+        "repeat"    :   "[off|track|context] | Set repeat mode",
+        "devices"   :   "List available devices",
+        "transfer"  :   "[device_name] | Transfer playback to another device",
+        "search"    :   "[query] | Search for a track",
+        "playuri"   :   "[spotify:track:URI] | Play a specific track by URI",
+        "queue"     :   "Show playback queue",
+        "addqueue"  :   "[spotify:track:URI] | Add track to queue",
+        "fade-in"   :   "Initializes fade in action",
+        "fade-out"  :   "Initializes fade out action",
+        "change-ini":   "Changes config.ini file",
+        "clear"     :   "Clears history of a terminal",
+        "filter"    :   "? todo",
+        "exit"      :   "Exit the program"
     }
 
     while True:
@@ -51,13 +52,6 @@ async def get_input(prompt: str = "? ") -> None:
 
         else:
             cmd = ""
-        
-        """
-        "   I have to set every case to await in case of some action to not hold traffic
-        "   This portion of code is such spaghetti ikr?
-        "   Plz don't judge on how I do things
-        "   I'm looking at you wojtek.
-        """
 
         try:
             
@@ -139,18 +133,13 @@ async def get_input(prompt: str = "? ") -> None:
                         raise IndexError
                     
                 case "queue":
-                    print("Spotify Web API does not support retrieving the queue. Use your client.")
+                    await scmd.queue()
                     
-
-                case "addqueue": # TODO
-                    """
+                case "addqueue": # not working yet
                     if len(args) > 1 and len(args) < 3:
-                        await scmd.add_to_queue(args[1])
-                        print("Added to queue.")
+                        await scmd.add_to_queue(args[1], None)
                     else:
                         raise IndexError
-                    """
-                    print("a")
                 
                 case "fade-in":
                     await scmd.fade_in()
@@ -163,6 +152,9 @@ async def get_input(prompt: str = "? ") -> None:
 
                 case "clear":
                     print("\033c")
+
+                case "filter":
+                    print("todo")
 
                 case "exit":
                     tasks = asyncio.all_tasks()
@@ -195,4 +187,11 @@ async def main():
     except asyncio.exceptions.CancelledError:
         pass
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
+
+
+"""
+"   Made with <3 by kubaQWI and cement for ZSTiO Radiowęzeł Automated Music System using Spotify API
+"   https://github.com/kubaQWI/spotifyconsolepy
+"""
