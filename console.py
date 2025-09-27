@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
 import asyncio
-
 import config
 import spotify_commands as scmd
 
@@ -45,7 +42,6 @@ async def get_input(prompt: str = "? ") -> None:
             continue
 
         cmd = args[0]
-        #argstr = " ".join(args[1:]) < don't know where is used xd, gotta leave that...
 
         if cmd in commands:
             pass
@@ -97,7 +93,7 @@ async def get_input(prompt: str = "? ") -> None:
                         
                 case "devices":
                     if len(args) == 1:
-                        devices = (await scmd.api_get_device_data(print_all_devices=True))
+                        await scmd.api_get_device_data(print_all_devices=True)
                     else:
                         raise IndexError
 
@@ -161,11 +157,11 @@ async def get_input(prompt: str = "? ") -> None:
                     for task in tasks:
                         task.cancel()
 
-                    print("Exiting...")
+                    print("! Exiting...")
                     return
 
                 case "":
-                    print(f"There is no command such as '{line}'. Type 'help' for more info.")
+                    print(f"! There is no command such as '{line}'. Type 'help' for more info.")
 
         except IndexError:
             for Left, Right in commands.items():
@@ -173,11 +169,10 @@ async def get_input(prompt: str = "? ") -> None:
                     print(f"Usage: {Left} - {Right}")
 
         except NameError as e:
-            print(f"{e}")
-            print("All spotify related functions are disabled.")
+            print("! All spotify related functions are disabled.")
             
         except Exception as e:
-            print(f"Error executing command '{cmd}': {e}")
+            print(f"! Error executing command '{cmd}': {e}")
 
 async def main():
     task_ = asyncio.create_task(get_input())

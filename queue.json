@@ -1,0 +1,692 @@
+{
+    "queue": [
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "0Y5tJX1MQlPlqiwlOH1tJY",
+                        "name": "Travis Scott",
+                        "type": "artist",
+                        "uri": "spotify:artist:0Y5tJX1MQlPlqiwlOH1tJY"
+                    }
+                ],
+                "id": "4PWBTB6NYSKQwfo79I3prg",
+                "name": "Rodeo",
+                "type": "album",
+                "uri": "spotify:album:4PWBTB6NYSKQwfo79I3prg"
+            },
+            "artists": [
+                {
+                    "id": "0Y5tJX1MQlPlqiwlOH1tJY",
+                    "name": "Travis Scott",
+                    "type": "artist",
+                    "uri": "spotify:artist:0Y5tJX1MQlPlqiwlOH1tJY"
+                },
+                {
+                    "id": "4dYQmk5ma04mZ1KJ9KkAQK",
+                    "name": "Kacy Hill",
+                    "type": "artist",
+                    "uri": "spotify:artist:4dYQmk5ma04mZ1KJ9KkAQK"
+                }
+            ],
+            "duration_ms": 339066,
+            "explicit": true,
+            "id": "51EC3I1nQXpec4gDk0mQyP",
+            "is_local": false,
+            "name": "90210 (feat. Kacy Hill)",
+            "type": "track",
+            "uri": "spotify:track:51EC3I1nQXpec4gDk0mQyP"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "4MCBfE4596Uoi2O4DtmEMz",
+                        "name": "Juice WRLD",
+                        "type": "artist",
+                        "uri": "spotify:artist:4MCBfE4596Uoi2O4DtmEMz"
+                    }
+                ],
+                "id": "1btu0SV2DOI5HoFsvUd78F",
+                "name": "Death Race For Love (Bonus Track Version)",
+                "type": "album",
+                "uri": "spotify:album:1btu0SV2DOI5HoFsvUd78F"
+            },
+            "artists": [
+                {
+                    "id": "4MCBfE4596Uoi2O4DtmEMz",
+                    "name": "Juice WRLD",
+                    "type": "artist",
+                    "uri": "spotify:artist:4MCBfE4596Uoi2O4DtmEMz"
+                }
+            ],
+            "duration_ms": 144090,
+            "explicit": true,
+            "id": "55XOUxXsBBbC07PD3Zml3F",
+            "is_local": false,
+            "name": "Maze",
+            "type": "track",
+            "uri": "spotify:track:55XOUxXsBBbC07PD3Zml3F"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "1ZwdS5xdxEREPySFridCfh",
+                        "name": "2Pac",
+                        "type": "artist",
+                        "uri": "spotify:artist:1ZwdS5xdxEREPySFridCfh"
+                    }
+                ],
+                "id": "7zURSbIVZ5vl3NIKkrVRvl",
+                "name": "R U Still Down? [Remember Me]",
+                "type": "album",
+                "uri": "spotify:album:7zURSbIVZ5vl3NIKkrVRvl"
+            },
+            "artists": [
+                {
+                    "id": "1ZwdS5xdxEREPySFridCfh",
+                    "name": "2Pac",
+                    "type": "artist",
+                    "uri": "spotify:artist:1ZwdS5xdxEREPySFridCfh"
+                }
+            ],
+            "duration_ms": 281600,
+            "explicit": true,
+            "id": "4AE7Lj39VnSZNOmGH2iZaq",
+            "is_local": false,
+            "name": "Do For Love",
+            "type": "track",
+            "uri": "spotify:track:4AE7Lj39VnSZNOmGH2iZaq"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "0Y5tJX1MQlPlqiwlOH1tJY",
+                        "name": "Travis Scott",
+                        "type": "artist",
+                        "uri": "spotify:artist:0Y5tJX1MQlPlqiwlOH1tJY"
+                    }
+                ],
+                "id": "42WVQWuf1teDysXiOupIZt",
+                "name": "Birds In The Trap Sing McKnight",
+                "type": "album",
+                "uri": "spotify:album:42WVQWuf1teDysXiOupIZt"
+            },
+            "artists": [
+                {
+                    "id": "50co4Is1HCEo8bhOyUWKpn",
+                    "name": "Young Thug",
+                    "type": "artist",
+                    "uri": "spotify:artist:50co4Is1HCEo8bhOyUWKpn"
+                },
+                {
+                    "id": "0Y5tJX1MQlPlqiwlOH1tJY",
+                    "name": "Travis Scott",
+                    "type": "artist",
+                    "uri": "spotify:artist:0Y5tJX1MQlPlqiwlOH1tJY"
+                },
+                {
+                    "id": "0VRj0yCOv2FXJNP47XQnx5",
+                    "name": "Quavo",
+                    "type": "artist",
+                    "uri": "spotify:artist:0VRj0yCOv2FXJNP47XQnx5"
+                }
+            ],
+            "duration_ms": 252256,
+            "explicit": true,
+            "id": "20dP2DaMHIAmwWAbp7peSr",
+            "is_local": false,
+            "name": "pick up the phone (feat. Quavo)",
+            "type": "track",
+            "uri": "spotify:track:20dP2DaMHIAmwWAbp7peSr"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "0AkpPlFLnr0VQwZQeMGht0",
+                        "name": "Modjo",
+                        "type": "artist",
+                        "uri": "spotify:artist:0AkpPlFLnr0VQwZQeMGht0"
+                    }
+                ],
+                "id": "0vwDxngkhZuwNbcxzebCXI",
+                "name": "Modjo (Remastered)",
+                "type": "album",
+                "uri": "spotify:album:0vwDxngkhZuwNbcxzebCXI"
+            },
+            "artists": [
+                {
+                    "id": "0AkpPlFLnr0VQwZQeMGht0",
+                    "name": "Modjo",
+                    "type": "artist",
+                    "uri": "spotify:artist:0AkpPlFLnr0VQwZQeMGht0"
+                }
+            ],
+            "duration_ms": 307153,
+            "explicit": false,
+            "id": "49X0LAl6faAusYq02PRAY6",
+            "is_local": false,
+            "name": "Lady - Hear Me Tonight",
+            "type": "track",
+            "uri": "spotify:track:49X0LAl6faAusYq02PRAY6"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "6DPYiyq5kWVQS4RGwxzPC7",
+                        "name": "Dr. Dre",
+                        "type": "artist",
+                        "uri": "spotify:artist:6DPYiyq5kWVQS4RGwxzPC7"
+                    }
+                ],
+                "id": "7q2B4M5EiBkqrlsNW8lB7N",
+                "name": "2001",
+                "type": "album",
+                "uri": "spotify:album:7q2B4M5EiBkqrlsNW8lB7N"
+            },
+            "artists": [
+                {
+                    "id": "6DPYiyq5kWVQS4RGwxzPC7",
+                    "name": "Dr. Dre",
+                    "type": "artist",
+                    "uri": "spotify:artist:6DPYiyq5kWVQS4RGwxzPC7"
+                },
+                {
+                    "id": "7hJcb9fa4alzcOq3EaNPoG",
+                    "name": "Snoop Dogg",
+                    "type": "artist",
+                    "uri": "spotify:artist:7hJcb9fa4alzcOq3EaNPoG"
+                }
+            ],
+            "duration_ms": 161506,
+            "explicit": true,
+            "id": "4LwU4Vp6od3Sb08CsP99GC",
+            "is_local": false,
+            "name": "The Next Episode",
+            "type": "track",
+            "uri": "spotify:track:4LwU4Vp6od3Sb08CsP99GC"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "0LcJLqbBmaGUft1e9Mm8HV",
+                        "name": "ABBA",
+                        "type": "artist",
+                        "uri": "spotify:artist:0LcJLqbBmaGUft1e9Mm8HV"
+                    }
+                ],
+                "id": "7iLuHJkrb9KHPkMgddYigh",
+                "name": "Voulez-Vous",
+                "type": "album",
+                "uri": "spotify:album:7iLuHJkrb9KHPkMgddYigh"
+            },
+            "artists": [
+                {
+                    "id": "0LcJLqbBmaGUft1e9Mm8HV",
+                    "name": "ABBA",
+                    "type": "artist",
+                    "uri": "spotify:artist:0LcJLqbBmaGUft1e9Mm8HV"
+                }
+            ],
+            "duration_ms": 292613,
+            "explicit": false,
+            "id": "3vkQ5DAB1qQMYO4Mr9zJN6",
+            "is_local": false,
+            "name": "Gimme! Gimme! Gimme! (A Man After Midnight)",
+            "type": "track",
+            "uri": "spotify:track:3vkQ5DAB1qQMYO4Mr9zJN6"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "67hb7towEyKvt5Z8Bx306c",
+                        "name": "Empire Of The Sun",
+                        "type": "artist",
+                        "uri": "spotify:artist:67hb7towEyKvt5Z8Bx306c"
+                    }
+                ],
+                "id": "3qFui1PcteHFky44CeUflG",
+                "name": "Walking On A Dream",
+                "type": "album",
+                "uri": "spotify:album:3qFui1PcteHFky44CeUflG"
+            },
+            "artists": [
+                {
+                    "id": "67hb7towEyKvt5Z8Bx306c",
+                    "name": "Empire Of The Sun",
+                    "type": "artist",
+                    "uri": "spotify:artist:67hb7towEyKvt5Z8Bx306c"
+                }
+            ],
+            "duration_ms": 198440,
+            "explicit": false,
+            "id": "3HfhB8sYqLlVmpBPb7cc2x",
+            "is_local": false,
+            "name": "Walking On A Dream",
+            "type": "track",
+            "uri": "spotify:track:3HfhB8sYqLlVmpBPb7cc2x"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "5T0MSzX9RC5NA6gAI6irSn",
+                        "name": "Estelle",
+                        "type": "artist",
+                        "uri": "spotify:artist:5T0MSzX9RC5NA6gAI6irSn"
+                    }
+                ],
+                "id": "1fpyVGMhF1vdl4XTFo1IH0",
+                "name": "Shine",
+                "type": "album",
+                "uri": "spotify:album:1fpyVGMhF1vdl4XTFo1IH0"
+            },
+            "artists": [
+                {
+                    "id": "5T0MSzX9RC5NA6gAI6irSn",
+                    "name": "Estelle",
+                    "type": "artist",
+                    "uri": "spotify:artist:5T0MSzX9RC5NA6gAI6irSn"
+                },
+                {
+                    "id": "5K4W6rqBFWDnAN6FQUkS6x",
+                    "name": "Kanye West",
+                    "type": "artist",
+                    "uri": "spotify:artist:5K4W6rqBFWDnAN6FQUkS6x"
+                }
+            ],
+            "duration_ms": 284733,
+            "explicit": true,
+            "id": "6etwirSInfuJrSOlogS6Sh",
+            "is_local": false,
+            "name": "American Boy",
+            "type": "track",
+            "uri": "spotify:track:6etwirSInfuJrSOlogS6Sh"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "1G9G7WwrXka3Z1r7aIDjI7",
+                        "name": "Outkast",
+                        "type": "artist",
+                        "uri": "spotify:artist:1G9G7WwrXka3Z1r7aIDjI7"
+                    }
+                ],
+                "id": "1UsmQ3bpJTyK6ygoOOjG1r",
+                "name": "Speakerboxxx/The Love Below",
+                "type": "album",
+                "uri": "spotify:album:1UsmQ3bpJTyK6ygoOOjG1r"
+            },
+            "artists": [
+                {
+                    "id": "1G9G7WwrXka3Z1r7aIDjI7",
+                    "name": "Outkast",
+                    "type": "artist",
+                    "uri": "spotify:artist:1G9G7WwrXka3Z1r7aIDjI7"
+                }
+            ],
+            "duration_ms": 235213,
+            "explicit": true,
+            "id": "2PpruBYCo4H7WOBJ7Q2EwM",
+            "is_local": false,
+            "name": "Hey Ya!",
+            "type": "track",
+            "uri": "spotify:track:2PpruBYCo4H7WOBJ7Q2EwM"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "0id62QV2SZZfvBn9xpmuCl",
+                        "name": "Aloe Blacc",
+                        "type": "artist",
+                        "uri": "spotify:artist:0id62QV2SZZfvBn9xpmuCl"
+                    }
+                ],
+                "id": "6G9PvX9f6Dq26JzsiVHIdl",
+                "name": "Good Things",
+                "type": "album",
+                "uri": "spotify:album:6G9PvX9f6Dq26JzsiVHIdl"
+            },
+            "artists": [
+                {
+                    "id": "0id62QV2SZZfvBn9xpmuCl",
+                    "name": "Aloe Blacc",
+                    "type": "artist",
+                    "uri": "spotify:artist:0id62QV2SZZfvBn9xpmuCl"
+                }
+            ],
+            "duration_ms": 243053,
+            "explicit": false,
+            "id": "3oUphdZVPyrsprZ8FgbmQS",
+            "is_local": false,
+            "name": "I Need A Dollar",
+            "type": "track",
+            "uri": "spotify:track:3oUphdZVPyrsprZ8FgbmQS"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "07XSN3sPlIlB2L2XNcTwJw",
+                        "name": "KISS",
+                        "type": "artist",
+                        "uri": "spotify:artist:07XSN3sPlIlB2L2XNcTwJw"
+                    }
+                ],
+                "id": "4FA68GsblSfvKZZRfM1tI1",
+                "name": "Dynasty",
+                "type": "album",
+                "uri": "spotify:album:4FA68GsblSfvKZZRfM1tI1"
+            },
+            "artists": [
+                {
+                    "id": "07XSN3sPlIlB2L2XNcTwJw",
+                    "name": "KISS",
+                    "type": "artist",
+                    "uri": "spotify:artist:07XSN3sPlIlB2L2XNcTwJw"
+                }
+            ],
+            "duration_ms": 271240,
+            "explicit": false,
+            "id": "07q0QVgO56EorrSGHC48y3",
+            "is_local": false,
+            "name": "I Was Made For Lovin' You",
+            "type": "track",
+            "uri": "spotify:track:07q0QVgO56EorrSGHC48y3"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "3sntDD4Y2K97qvDq3GPqZ5",
+                        "name": "Myslovitz",
+                        "type": "artist",
+                        "uri": "spotify:artist:3sntDD4Y2K97qvDq3GPqZ5"
+                    }
+                ],
+                "id": "7rhZ33bYZZ4afrQ7r6Uv1z",
+                "name": "Z rozmy\u015bla\u0144 przy \u015bniadaniu",
+                "type": "album",
+                "uri": "spotify:album:7rhZ33bYZZ4afrQ7r6Uv1z"
+            },
+            "artists": [
+                {
+                    "id": "3sntDD4Y2K97qvDq3GPqZ5",
+                    "name": "Myslovitz",
+                    "type": "artist",
+                    "uri": "spotify:artist:3sntDD4Y2K97qvDq3GPqZ5"
+                }
+            ],
+            "duration_ms": 192240,
+            "explicit": false,
+            "id": "2AmealVVZqRStMZVNyAByN",
+            "is_local": false,
+            "name": "Scenariusz dla moich s\u0105siad\u00f3w",
+            "type": "track",
+            "uri": "spotify:track:2AmealVVZqRStMZVNyAByN"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "0QJIPDAEDILuo8AIq3pMuU",
+                        "name": "M.I.A.",
+                        "type": "artist",
+                        "uri": "spotify:artist:0QJIPDAEDILuo8AIq3pMuU"
+                    }
+                ],
+                "id": "2xoj2gYed3IYmGWn3owSfu",
+                "name": "Kala",
+                "type": "album",
+                "uri": "spotify:album:2xoj2gYed3IYmGWn3owSfu"
+            },
+            "artists": [
+                {
+                    "id": "0QJIPDAEDILuo8AIq3pMuU",
+                    "name": "M.I.A.",
+                    "type": "artist",
+                    "uri": "spotify:artist:0QJIPDAEDILuo8AIq3pMuU"
+                }
+            ],
+            "duration_ms": 205200,
+            "explicit": false,
+            "id": "1ixbwbeBi5ufN4noUKmW5a",
+            "is_local": false,
+            "name": "Paper Planes",
+            "type": "track",
+            "uri": "spotify:track:1ixbwbeBi5ufN4noUKmW5a"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "6olE6TJLqED3rqDCT0FyPh",
+                        "name": "Nirvana",
+                        "type": "artist",
+                        "uri": "spotify:artist:6olE6TJLqED3rqDCT0FyPh"
+                    }
+                ],
+                "id": "2guirTSEqLizK7j9i1MTTZ",
+                "name": "Nevermind (Remastered)",
+                "type": "album",
+                "uri": "spotify:album:2guirTSEqLizK7j9i1MTTZ"
+            },
+            "artists": [
+                {
+                    "id": "6olE6TJLqED3rqDCT0FyPh",
+                    "name": "Nirvana",
+                    "type": "artist",
+                    "uri": "spotify:artist:6olE6TJLqED3rqDCT0FyPh"
+                }
+            ],
+            "duration_ms": 218920,
+            "explicit": false,
+            "id": "4P5KoWXOxwuobLmHXLMobV",
+            "is_local": false,
+            "name": "Come As You Are",
+            "type": "track",
+            "uri": "spotify:track:4P5KoWXOxwuobLmHXLMobV"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "5T0MSzX9RC5NA6gAI6irSn",
+                        "name": "Estelle",
+                        "type": "artist",
+                        "uri": "spotify:artist:5T0MSzX9RC5NA6gAI6irSn"
+                    }
+                ],
+                "id": "1fpyVGMhF1vdl4XTFo1IH0",
+                "name": "Shine",
+                "type": "album",
+                "uri": "spotify:album:1fpyVGMhF1vdl4XTFo1IH0"
+            },
+            "artists": [
+                {
+                    "id": "5T0MSzX9RC5NA6gAI6irSn",
+                    "name": "Estelle",
+                    "type": "artist",
+                    "uri": "spotify:artist:5T0MSzX9RC5NA6gAI6irSn"
+                },
+                {
+                    "id": "5K4W6rqBFWDnAN6FQUkS6x",
+                    "name": "Kanye West",
+                    "type": "artist",
+                    "uri": "spotify:artist:5K4W6rqBFWDnAN6FQUkS6x"
+                }
+            ],
+            "duration_ms": 284733,
+            "explicit": true,
+            "id": "6etwirSInfuJrSOlogS6Sh",
+            "is_local": false,
+            "name": "American Boy",
+            "type": "track",
+            "uri": "spotify:track:6etwirSInfuJrSOlogS6Sh"
+        },
+        {
+            "album": {
+                "album_type": "single",
+                "artists": [
+                    {
+                        "id": "4Ga1P7PMIsmqEZqhYZQgDo",
+                        "name": "Lil Tecca",
+                        "type": "artist",
+                        "uri": "spotify:artist:4Ga1P7PMIsmqEZqhYZQgDo"
+                    }
+                ],
+                "id": "2Ro9gydgq5JWy7b22zPty9",
+                "name": "500lbs",
+                "type": "album",
+                "uri": "spotify:album:2Ro9gydgq5JWy7b22zPty9"
+            },
+            "artists": [
+                {
+                    "id": "4Ga1P7PMIsmqEZqhYZQgDo",
+                    "name": "Lil Tecca",
+                    "type": "artist",
+                    "uri": "spotify:artist:4Ga1P7PMIsmqEZqhYZQgDo"
+                }
+            ],
+            "duration_ms": 144390,
+            "explicit": true,
+            "id": "1xWkeSPhf3bZqHY7Ncz8vp",
+            "is_local": false,
+            "name": "500lbs",
+            "type": "track",
+            "uri": "spotify:track:1xWkeSPhf3bZqHY7Ncz8vp"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "6DPYiyq5kWVQS4RGwxzPC7",
+                        "name": "Dr. Dre",
+                        "type": "artist",
+                        "uri": "spotify:artist:6DPYiyq5kWVQS4RGwxzPC7"
+                    }
+                ],
+                "id": "7q2B4M5EiBkqrlsNW8lB7N",
+                "name": "2001",
+                "type": "album",
+                "uri": "spotify:album:7q2B4M5EiBkqrlsNW8lB7N"
+            },
+            "artists": [
+                {
+                    "id": "6DPYiyq5kWVQS4RGwxzPC7",
+                    "name": "Dr. Dre",
+                    "type": "artist",
+                    "uri": "spotify:artist:6DPYiyq5kWVQS4RGwxzPC7"
+                },
+                {
+                    "id": "7hJcb9fa4alzcOq3EaNPoG",
+                    "name": "Snoop Dogg",
+                    "type": "artist",
+                    "uri": "spotify:artist:7hJcb9fa4alzcOq3EaNPoG"
+                }
+            ],
+            "duration_ms": 270586,
+            "explicit": true,
+            "id": "503OTo2dSqe7qk76rgsbep",
+            "is_local": false,
+            "name": "Still D.R.E.",
+            "type": "track",
+            "uri": "spotify:track:503OTo2dSqe7qk76rgsbep"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "0du5cEVh5yTK9QJze8zA0C",
+                        "name": "Bruno Mars",
+                        "type": "artist",
+                        "uri": "spotify:artist:0du5cEVh5yTK9QJze8zA0C"
+                    }
+                ],
+                "id": "58ufpQsJ1DS5kq4hhzQDiI",
+                "name": "Unorthodox Jukebox",
+                "type": "album",
+                "uri": "spotify:album:58ufpQsJ1DS5kq4hhzQDiI"
+            },
+            "artists": [
+                {
+                    "id": "0du5cEVh5yTK9QJze8zA0C",
+                    "name": "Bruno Mars",
+                    "type": "artist",
+                    "uri": "spotify:artist:0du5cEVh5yTK9QJze8zA0C"
+                }
+            ],
+            "duration_ms": 233478,
+            "explicit": false,
+            "id": "3w3y8KPTfNeOKPiqUTakBh",
+            "is_local": false,
+            "name": "Locked out of Heaven",
+            "type": "track",
+            "uri": "spotify:track:3w3y8KPTfNeOKPiqUTakBh"
+        },
+        {
+            "album": {
+                "album_type": "album",
+                "artists": [
+                    {
+                        "id": "3y24n3XhZ96wgwRXjvS17T",
+                        "name": "Coolio",
+                        "type": "artist",
+                        "uri": "spotify:artist:3y24n3XhZ96wgwRXjvS17T"
+                    }
+                ],
+                "id": "0BJYNipGyMrw4ngKDJXzXZ",
+                "name": "Gangsta's Paradise",
+                "type": "album",
+                "uri": "spotify:album:0BJYNipGyMrw4ngKDJXzXZ"
+            },
+            "artists": [
+                {
+                    "id": "3y24n3XhZ96wgwRXjvS17T",
+                    "name": "Coolio",
+                    "type": "artist",
+                    "uri": "spotify:artist:3y24n3XhZ96wgwRXjvS17T"
+                },
+                {
+                    "id": "2LhsePRtgCo4THVKULQBL7",
+                    "name": "L.V.",
+                    "type": "artist",
+                    "uri": "spotify:artist:2LhsePRtgCo4THVKULQBL7"
+                }
+            ],
+            "duration_ms": 240693,
+            "explicit": false,
+            "id": "1DIXPcTDzTj8ZMHt3PDt8p",
+            "is_local": false,
+            "name": "Gangsta's Paradise",
+            "type": "track",
+            "uri": "spotify:track:1DIXPcTDzTj8ZMHt3PDt8p"
+        }
+    ]
+}
