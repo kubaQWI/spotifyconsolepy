@@ -3,16 +3,15 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import asyncio
 import spotify_commands as scmd
+import time
 
 import config
-"""
 # init
 data = config.return_config()
 
 if not data:
     print("ini file is broken")
     exit(1)
-"""
 
 """
 data[0] - config_id
@@ -22,7 +21,6 @@ data[3] - device_name
 """
 
 
-""" << temp solution, i may change this
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     client_id=data[0],
     client_secret=data[1],
@@ -43,23 +41,36 @@ def fade_in(device_id: str | None = None, fade_duration: int = 5) -> None:
             print("Error: no control devices.")
             return
 
-        current_volume = devices_response['devices'][0].get('volume_percent', None)
+        current_device = None
+        for dev in devices_response['devices']:
+            if device_name == dev['name']:
+                current_device = dev
+                break
 
-        if current_volume == None:
+        if current_device is None:
+            print("Failed to find device.")
+            return
+
+        if device_id is None:
+            device_id = current_device['id']
+
+        current_volume = current_device.get('volume_percent', 0)
+        if current_volume is None:
             print("Failed to get device volume.")
             return
 
-        print(f"Current volume: {current_volume}")
-
-        for volume in range(current_volume, 96, int(fade_duration)):
-            sp.volume(volume, device_id)
-            print(f"Vol: {volume}")
-            time.sleep(fade_duration / 10)
+        for volume in range(current_volume, 101, 5):
+            sp.volume(volume_percent=volume, device_id=device_id)
+#            print(f"Vol: {volume}")
+            time.sleep(fade_duration / 20)
 
     except Exception as e:
         print(f"Something went wrong: {e}")
-"""
 
+if __name__ == "__main__":
+    fade_in()
+
+"""
 async def main() -> None:
     fade_in_ = asyncio.create_task(scmd.fade_in())
 
@@ -67,9 +78,4 @@ async def main() -> None:
 
 if __name__ == "__main__":
     asyncio.run(main())
-
-
-"""
-"   Made with <3 by kubaQWI and cement for ZSTiO Radiowęzeł Automated Music System using Spotify API
-"   https://github.com/kubaQWI/spotifyconsolepy
 """
