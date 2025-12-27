@@ -7,20 +7,13 @@ import spotify_commands as scmd
 
 print("Initialization...")
 
-<<<<<<< HEAD
 config_data = config.return_config()
 print(config_data)
-=======
-#init
-data = config.return_config()
-print(data)
->>>>>>> 919cc0633a7352c37133cf9fed4ef5b5d46fa702
 
 # Get Spotify instance and device name from module
 sp = scmd.get_spotify()
 device_name = scmd.get_device_name()
 
-<<<<<<< HEAD
 if sp is None or device_name is None:
     print("! Spotify initialization failed. Check your config.")
     exit()
@@ -36,26 +29,6 @@ except Exception as e:
 playlist_uri = 'spotify:playlist:02hdeJ4xNLqi0ek760Znxh'
 cache_file = '/home/pi/cache_tracks.json' if os.name != 'nt' else './cache_tracks.json'
 max_cache_tracks = 180
-=======
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-    client_id=data[0],
-    client_secret=data[1],
-    redirect_uri='http://127.0.0.1:8000/callback',
-    scope='user-modify-playback-state user-read-playback-state',
-    open_browser=False,
-    cache_path=data[2]
-))
-
-user = sp.current_user()
-device_name = data[3]
-
-print("Authentication completed")
-print(f"Logged user: {user['display_name']}")
-
-playlist_uri = 'spotify:playlist:02hdeJ4xNLqi0ek760Znxh'
-cache_file = '/home/pi/cache_tracks.json'
-max_cache_tracks = 5
->>>>>>> 919cc0633a7352c37133cf9fed4ef5b5d46fa702
 
 def set_volume(volume_percent=0):
     try:
@@ -69,7 +42,6 @@ def load_played_tracks():
         with open(cache_file, 'r') as f:
             return set(json.load(f))
     return set()
-<<<<<<< HEAD
 
 def save_played_track(track_uri):
     played = load_played_tracks()
@@ -116,17 +88,6 @@ def start_playback(device_id):
     )
     save_played_track(track_uri)
     time.sleep(2)
-=======
-
-def save_played_track(track_uri):
-    played = load_played_tracks()
-    played.add(track_uri)
-    if len(played) >= max_cache_tracks:
-        print(f"cache cleared: {max_cache_tracks}")
-        played = set()
-    with open(cache_file, 'w') as f:
-        json.dump(list(played), f)
->>>>>>> 919cc0633a7352c37133cf9fed4ef5b5d46fa702
 
 def add_next_to_queue(device_id):
     tracks = fetch_playlist_tracks()
