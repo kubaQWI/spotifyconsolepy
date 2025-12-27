@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
 import asyncio
-
 import config
 import spotify_commands as scmd
 
@@ -45,7 +42,6 @@ async def get_input(prompt: str = "? ") -> None:
             continue
 
         cmd = args[0]
-        #argstr = " ".join(args[1:]) < don't know where is used xd, gotta leave that...
 
         if cmd in commands:
             pass
@@ -97,34 +93,15 @@ async def get_input(prompt: str = "? ") -> None:
                         
                 case "devices":
                     if len(args) == 1:
-                        devices = (await scmd.api_get_device_data(print_all_devices=True))
+                        await scmd.api_get_device_data(print_all_devices=True)
                     else:
                         raise IndexError
 
                 case "transfer": # TODO
-                    """
                     if len(args) > 1 and len(args) < 3:
-                        name = " ".join(args[1:])
-                        devices = await scmd.api_get_device_data()
-                        device = next((d for d in devices if d["name"].lower() == name.lower()), None)
-                        if device:
-                            await sp.transfer_playback(device["id"], force_play=False)
-                            print(f"Transferred to {device['name']}")
-                        else:
-                            print("Device not found.")
+                        await scmd.transfer_playback(args[1])
                     else:
-                        raise IndexError
-                    """
-                
-                case "search": # TODO
-                    """
-                    if len(args) > 1:
-                        results = await sp.search(argstr, type="track", limit=5)
-                        for i, item in enumerate(results["tracks"]["items"], 1):
-                            print(f"{i}. {item['name']} by {item['artists'][0]['name']} - URI: {item['uri']}")
-                    else:
-                        raise IndexError
-                    """
+                        raise IndexError 
 
                 case "playuri":
                     if len(args) > 1:
@@ -135,7 +112,7 @@ async def get_input(prompt: str = "? ") -> None:
                 case "queue":
                     await scmd.queue()
                     
-                case "addqueue": # not working yet
+                case "addqueue":
                     if len(args) > 1 and len(args) < 3:
                         await scmd.add_to_queue(args[1], None)
                     else:
@@ -161,11 +138,11 @@ async def get_input(prompt: str = "? ") -> None:
                     for task in tasks:
                         task.cancel()
 
-                    print("Exiting...")
+                    print("! Exiting...")
                     return
 
                 case "":
-                    print(f"There is no command such as '{line}'. Type 'help' for more info.")
+                    print(f"! There is no command such as '{line}'. Type 'help' for more info.")
 
         except IndexError:
             for Left, Right in commands.items():
@@ -173,11 +150,10 @@ async def get_input(prompt: str = "? ") -> None:
                     print(f"Usage: {Left} - {Right}")
 
         except NameError as e:
-            print(f"{e}")
-            print("All spotify related functions are disabled.")
+            print("! All spotify related functions are disabled.")
             
         except Exception as e:
-            print(f"Error executing command '{cmd}': {e}")
+            print(f"! Error executing command '{cmd}': {e}")
 
 async def main():
     task_ = asyncio.create_task(get_input())

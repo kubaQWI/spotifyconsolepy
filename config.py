@@ -4,6 +4,7 @@ from pathlib import Path
 import asyncio
 import os
 import getpass
+import socket
 
 config = cp.ConfigParser()
 default_config_ini = "./config.ini" if os.name == "nt" else f"/home/{getpass.getuser()}/spotipyconsole/config.ini"
@@ -95,7 +96,10 @@ async def change_input(file_path: str = default_config_ini) -> None:
         config_id = await ainput("Input client_id: ") # i know that is different but i'm too lazy to change every variable name xd
         client_secret = await ainput("Input client_secret: ")
         cache_path = await ainput("Input cache_path: ")
-        device_name = await ainput("Input device_name: ")
+        device_name = await ainput("Input device_name / (Your device hostname: %s, Input . to use current hostname): " %(socket.gethostname()))
+
+        if device_name == ".":
+            device_name = socket.gethostname()
 
         print(
             f"\nconfig_id = {config_id}\n" \

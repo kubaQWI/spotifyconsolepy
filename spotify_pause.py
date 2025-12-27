@@ -57,7 +57,6 @@ except subprocess.CalledProcessError:
 
 
 """
-"   I must say without coffee it's almost impossible to code
 "   Made with <3 by kubaQWI and cement for ZSTiO Radiowęzeł Automated Music System using Spotify API
 "   https://github.com/kubaQWI/spotifyconsolepy
 """
