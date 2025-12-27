@@ -176,11 +176,7 @@ if not target_device:
     print(f"Device not found: {device_name}")
     exit()
 
-<<<<<<< HEAD
 set_volume(0)
-=======
-set_volume(target_device['id'])
->>>>>>> 919cc0633a7352c37133cf9fed4ef5b5d46fa702
 start_playback(target_device['id'])
 monitor_playback(target_device['id'])
 
