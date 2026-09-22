@@ -7,6 +7,7 @@ from typing import Optional
 import config
 import os
 
+debug = True # change it 
 _sp: Optional[spotipy.Spotify] = None
 _device_name: Optional[str] = None
 
@@ -319,6 +320,14 @@ async def repeat(mode: str = "off", device_id: str | None = None) -> None:
     else:
         print("! Invalid option, (off, context, track)")
 
+def remove_keys(obj, keys_to_remove) -> dict | list | None: # change it to be a global method
+        if isinstance(obj, dict):
+            return {k: remove_keys(v, keys_to_remove) for k, v in obj.items() if k not in keys_to_remove}
+        elif isinstance(obj, list):
+            return [remove_keys(i, keys_to_remove) for i in obj]
+        else:
+            return obj
+
 async def queue() -> None:
     sp = get_spotify()
     if sp is None:
@@ -328,14 +337,6 @@ async def queue() -> None:
     if not sp_data:
         print("! No data")
         return
-
-    def remove_keys(obj, keys_to_remove):
-        if isinstance(obj, dict):
-            return {k: remove_keys(v, keys_to_remove) for k, v in obj.items() if k not in keys_to_remove}
-        elif isinstance(obj, list):
-            return [remove_keys(i, keys_to_remove) for i in obj]
-        else:
-            return obj
 
     data = remove_keys(sp_data, {
         "available_markets", "images", "currently_playing", "external_ids", "external_urls",
@@ -398,10 +399,37 @@ async def transfer_playback(device: str | None = None) -> None:
 
     sp.transfer_playback(device_id)
 
-if __name__ == "__main__":
-    print("This file is not meant to be executed. Use console.py")
-    exit()
+def get_playlist_len(playlist_uri: str | None = None) -> int | None:
+    sp = get_spotify()
+    if sp is None:
+        return
     
+    if playlist_uri is None:
+        print("Provide playlist uri.")
+        return None
+
+    playlist_items = sp.playlist_items(playlist_id = playlist_uri)
+
+    tracks = remove_keys(playlist_items, {"available_markets", "images", "currently_playing", "external_ids", "external_urls",
+                "disc_number", "track_number", "total_tracks", "popularity", "preview_url",
+                "href", "release_date", "release_date_precision"})
+    
+    if debug:
+        with open("playlist_data.json", "w") as playlist_dump:
+            json.dump(tracks, playlist_dump, indent = 4)
+
+    if type(tracks) == dict:
+        print(tracks["tracks"])
+
+    print(playlist_items)
+
+if __name__ == "__main__":
+    if not debug:
+        print("This file is not meant to be executed. Use console.py")
+        exit()
+
+    get_playlist_len(playlist_uri = "spotify:playlist:19oPOQFGkZynVTsQm1aGoo")
+
 
 """
 "   Made with <3 by kubaQWI and cement for ZSTiO Radiowęzeł Automated Music System using Spotify API
