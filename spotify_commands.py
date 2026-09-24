@@ -7,7 +7,7 @@ from typing import Optional
 import config
 import os
 
-debug = True # change it 
+debug = False # change it 
 _sp: Optional[spotipy.Spotify] = None
 _device_name: Optional[str] = None
 
@@ -408,27 +408,29 @@ def get_playlist_len(playlist_uri: str | None = None) -> int | None:
         print("Provide playlist uri.")
         return None
 
-    playlist_items = sp.playlist_items(playlist_id = playlist_uri)
+    playlist_items = sp.playlist_items(playlist_id = playlist_uri, limit = 100)
 
-    tracks = remove_keys(playlist_items, {"available_markets", "images", "currently_playing", "external_ids", "external_urls",
-                "disc_number", "track_number", "total_tracks", "popularity", "preview_url",
-                "href", "release_date", "release_date_precision"})
+    # tracks = remove_keys(playlist_items, {"available_markets", "images", "currently_playing", "external_ids", "external_urls",  | for now i am commenting this, fuck memory efficiency :P
+    #            "disc_number", "track_number", "total_tracks", "popularity", "preview_url",
+    #            "href", "release_date", "release_date_precision"})
     
     if debug:
         with open("playlist_data.json", "w") as playlist_dump:
-            json.dump(tracks, playlist_dump, indent = 4)
+            json.dump(playlist_items, playlist_dump, indent = 4)
 
-    if type(tracks) == dict:
-        print(tracks["tracks"])
-
-    print(playlist_items)
+    if type(playlist_items) == dict:
+        return playlist_items["total"]
+    else:
+        return
 
 if __name__ == "__main__":
     if not debug:
         print("This file is not meant to be executed. Use console.py")
         exit()
 
-    get_playlist_len(playlist_uri = "spotify:playlist:19oPOQFGkZynVTsQm1aGoo")
+    print(get_playlist_len(playlist_uri = "spotify:playlist:02hdeJ4xNLqi0ek760Znxh"))
+
+   
 
 
 """
