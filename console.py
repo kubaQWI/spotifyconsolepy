@@ -20,7 +20,6 @@ async def get_input(prompt: str = "? ") -> None:
         "repeat"    :   "[off|track|context] | Set repeat mode",
         "devices"   :   "List available devices",
         "transfer"  :   "[device_name] | Transfer playback to another device",
-        "search"    :   "[query] | Search for a track",
         "playuri"   :   "[spotify:track:URI] | Play a specific track by URI",
         "queue"     :   "Show playback queue",
         "addqueue"  :   "[spotify:track:URI] | Add track to queue",
