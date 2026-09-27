@@ -4,8 +4,8 @@ import asyncio
 import time
 import json
 from typing import Optional
+import numpy
 import config
-import os
 
 debug = False # change it 
 _sp: Optional[spotipy.Spotify] = None
@@ -301,7 +301,7 @@ async def shuffle(mode: str | bool = "off", device_id: str | None = None) -> Non
             print("! Invalid argument")
             return
 
-    sp.shuffle(bool(mode), device_id)
+    sp.shuffle(mode, device_id)
 
 async def repeat(mode: str = "off", device_id: str | None = None) -> None:
     sp = get_spotify()
@@ -401,6 +401,7 @@ async def transfer_playback(device: str | None = None) -> None:
 
 def get_playlist_len(playlist_uri: str | None = None) -> int | None:
     sp = get_spotify()
+
     if sp is None:
         return
     
@@ -408,30 +409,69 @@ def get_playlist_len(playlist_uri: str | None = None) -> int | None:
         print("Provide playlist uri.")
         return None
 
-    playlist_items = sp.playlist_items(playlist_id = playlist_uri, limit = 100)
-
-    # tracks = remove_keys(playlist_items, {"available_markets", "images", "currently_playing", "external_ids", "external_urls",  | for now i am commenting this, fuck memory efficiency :P
-    #            "disc_number", "track_number", "total_tracks", "popularity", "preview_url",
-    #            "href", "release_date", "release_date_precision"})
+    playlist_items = sp.playlist_tracks(playlist_id = playlist_uri, limit = 1) # limit is set to 1 because we don't need all data for playlist (we only need total), the bigger playlist, the more wasted memory and network (and time) :P
     
     if debug:
         with open("playlist_data.json", "w") as playlist_dump:
             json.dump(playlist_items, playlist_dump, indent = 4)
 
     if type(playlist_items) == dict:
-        return playlist_items["total"]
+        return playlist_items["total"] # this return only if api call is successful!!!, should add failsafe in case api call fails (rewrite config.py).
     else:
+        print("Fetched data is not dict.")
         return
+
+def create_random_index_list(playlist_uri: str | None = None, file_dir: str = "./randomized_list.txt", count: int = 2) -> None:
+    sp = get_spotify()
+    
+    if sp is None:
+        return
+
+    if playlist_uri is None:
+        print("Provide playlist uri.")
+        return
+
+    
+    indexes = [ i for i in range(get_playlist_len(playlist_uri)) ] # type: ignore
+
+    indexes = indexes * count
+
+    if debug:
+        print(f"{(len(indexes) / count) == get_playlist_len(playlist_uri)}")
+        print(f"Length of indexes divided by count: {len(indexes) / count}, api call: {get_playlist_len(playlist_uri)}")
+
+    i = 0
+    shuffled = []
+    rolled_number = set()
+    while i < len(indexes):
+        
+        randint = numpy.random.randint(0, len(indexes))
+
+        if randint in rolled_number:
+            continue
+        else:
+            shuffled.append(indexes[randint])
+            rolled_number.add(randint)
+            i += 1
+
+    if debug:
+        print(f"Is length of shuffled and indexes equal: {len(shuffled) == len(indexes)}")
+
+    with open(file_dir, "w") as random_indexes:
+        random_indexes.write(f"{shuffled}")
+
+    print("Generated new randomized list for playlist.")
+
+    return
 
 if __name__ == "__main__":
     if not debug:
         print("This file is not meant to be executed. Use console.py")
         exit()
 
-    print(get_playlist_len(playlist_uri = "spotify:playlist:02hdeJ4xNLqi0ek760Znxh"))
+    playlist_uri = "spotify:playlist:02hdeJ4xNLqi0ek760Znxh"
 
-   
-
+    create_random_index_list(playlist_uri = playlist_uri)
 
 """
 "   Made with <3 by kubaQWI and cement for ZSTiO Radiowęzeł Automated Music System using Spotify API
