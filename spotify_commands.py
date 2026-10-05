@@ -421,7 +421,7 @@ def get_playlist_len(playlist_uri: str | None = None) -> int | None:
         print("Fetched data is not dict.")
         return
 
-def create_random_index_list(playlist_uri: str | None = None, file_dir: str = "./randomized_list.txt", count: int = 2) -> None:
+def create_random_index_list(playlist_uri: str | None = "spotify:playlist:02hdeJ4xNLqi0ek760Znxh", file_dir: str = "./randomized_list.txt", count: int = 2) -> None: # for now playlist_uri is hardcoded, but when i finish rewrited config, i'll change it to None
     sp = get_spotify()
     
     if sp is None:
@@ -455,14 +455,14 @@ def create_random_index_list(playlist_uri: str | None = None, file_dir: str = ".
             i += 1
 
     with open(file_dir, "w") as random_indexes:
-        random_indexes.write(f"{shuffled}")
-        random_indexes.write(f"\nGenerated random indexes for: {playlist_uri}")
+        random_indexes.write(f"{shuffled}\n")
+        random_indexes.write(f"{playlist_uri}")
 
     print("Generated new randomized list for playlist.")
 
     return
 
-async def play_from_rand_indexes(device_id: str | None = None, file_dir: str = "./randomized_list.txt") -> None:
+async def play_from_rand_indexes(device_id: str | None = None, file_dir: str = "./randomized_list.txt", playlist_uri: str | None = None) -> None:
     sp = get_spotify()
 
     if sp is None:
@@ -476,19 +476,49 @@ async def play_from_rand_indexes(device_id: str | None = None, file_dir: str = "
         device_id = data["id"]
         name = data["name"]
 
-    playlist_uri = "spotify:playlist:02hdeJ4xNLqi0ek760Znxh"
+    try:
 
-    with open(file_dir, 'w') as current_index:
-        index_list = current_index.readline()
-        print(index_list)
+        with open(file_dir, 'r') as current_index:
+            file_data = current_index.readlines()
+            indexes = file_data[0]
+            file_uri = file_data[1]
+
+    except IndexError:
+        print("Randomized list is broken, generating new one.")
+        create_random_index_list()
+        return
+    
+    if len(indexes) <= 1:
+        print("List is empty, generating new one.")
+        create_random_index_list(file_uri)
+
         
-        sp.start_playback(context_uri = playlist_uri, offset = {"position" : 188}, device_id = device_id)
+    sp.start_playback(context_uri = file_uri, offset = {"position" : 188}, device_id = device_id)
+    sp.repeat(state = 'context', device_id = device_id)
 
-        await asyncio.sleep(0.25)
+    await asyncio.sleep(1)
 
-        playback = await current_playback()
+    playback = sp.current_playback(market = "PL")
 
-        print(playback)
+    with open("debug.json", "w") as debug:
+        json.dump(playback, debug, indent = 4)
+
+    if playback is None:
+        return
+    
+    progress = playback["progress_ms"] / 1000
+    duration = playback["item"]["duration_ms"] / 1000
+
+    time_left = duration - progress
+
+    current_hour = time.strftime("%H")
+
+    if current_hour == 10:
+        break_duration = 15 * 60
+    else:
+        break_duration = 5 * 60
+
+    loop = True
 
 
 if __name__ == "__main__":
