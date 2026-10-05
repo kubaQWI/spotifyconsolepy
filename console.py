@@ -131,10 +131,12 @@ async def get_input(prompt: str = "? ") -> None:
                     print("\033c")
 
                 case "gen-rand-index":
-                    if len(args) > 1 and type(args[1]) == str:
+                    if len(args) > 1:
                         scmd.create_random_index_list(args[1])
                     elif len(args) > 2 and type(args[2]) == int:
                         scmd.create_random_index_list(args[1], count = args[2])
+                    elif len(args) == 1:
+                        scmd.create_random_index_list()
                     else:
                         raise IndexError
 
