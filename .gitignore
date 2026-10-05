@@ -4,4 +4,7 @@
 __pycache__/*
 cache
 rewrite.py
+*.txt
+!requirements.txt
+*_malinka.py
 # right now i don't want to add rewrite to branch cuz it's not finished yet
