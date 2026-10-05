@@ -9,26 +9,27 @@ async def ainput(prompt: str) -> str:
 async def get_input(prompt: str = "? ") -> None:
 
     commands = {
-        "help"      :   "Displays this message",
-        "play"      :   "Start/resume playback",
-        "pause"     :   "Pause playback",
-        "next"      :   "Skip to next track",
-        "previous"  :   "Skip to previous track",
-        "current"   :   "Show currently playing track",
-        "volume"    :   "[0-100] | Set volume to a given percentage",
-        "shuffle"   :   "[on/off] | Turn shuffle mode on or off",
-        "repeat"    :   "[off|track|context] | Set repeat mode",
-        "devices"   :   "List available devices",
-        "transfer"  :   "[device_name] | Transfer playback to another device",
-        "playuri"   :   "[spotify:track:URI] | Play a specific track by URI",
-        "queue"     :   "Show playback queue",
-        "addqueue"  :   "[spotify:track:URI] | Add track to queue",
-        "fade-in"   :   "Initializes fade in action",
-        "fade-out"  :   "Initializes fade out action",
-        "change-ini":   "Changes config.ini file",
-        "clear"     :   "Clears history of a terminal",
-        "filter"    :   "? todo",
-        "exit"      :   "Exit the program"
+        "help"              :   "Displays this message",
+        "play"              :   "Start/resume playback",
+        "pause"             :   "Pause playback",
+        "next"              :   "Skip to next track",
+        "previous"          :   "Skip to previous track",
+        "current"           :   "Show currently playing track",
+        "volume"            :   "[0-100] | Set volume to a given percentage",
+        "shuffle"           :   "[on/off] | Turn shuffle mode on or off",
+        "repeat"            :   "[off|track|context] | Set repeat mode",
+        "devices"           :   "List available devices",
+        "transfer"          :   "[device_name] | Transfer playback to another device",
+        "playuri"           :   "[spotify:track:URI] | Play a specific track by URI",
+        "queue"             :   "Show playback queue",
+        "addqueue"          :   "[spotify:track:URI] | Add track to queue",
+        "fade-in"           :   "Initializes fade in action",
+        "fade-out"          :   "Initializes fade out action",
+        "change-ini"        :   "Changes config.ini file",
+        "clear"             :   "Clears history of a terminal",
+        "gen-rand-index"    :   "[spotify:playlist:URI], [count] = 2 | Generates a randomized list of indexes for playlist with given count number",
+        "convert-url-to-uri":   "[Spotify URL] | Converts open.spotify.com url with uri to playlist, album, etc. to uri format e.g: [spotify:album:URI]",
+        "exit"              :   "Exit the program"
     }
 
     while True:
@@ -84,7 +85,7 @@ async def get_input(prompt: str = "? ") -> None:
                     else:
                         raise IndexError
 
-                case "repeat": # TODO
+                case "repeat":
                     if len(args) > 1 and len(args) < 3:
                         await scmd.repeat(args[1].lower())
                     else:
@@ -96,7 +97,7 @@ async def get_input(prompt: str = "? ") -> None:
                     else:
                         raise IndexError
 
-                case "transfer": # TODO
+                case "transfer":
                     if len(args) > 1 and len(args) < 3:
                         await scmd.transfer_playback(args[1])
                     else:
@@ -129,8 +130,16 @@ async def get_input(prompt: str = "? ") -> None:
                 case "clear":
                     print("\033c")
 
-                case "filter":
-                    print("todo")
+                case "gen-rand-index":
+                    if len(args) > 1 and type(args[1]) == str:
+                        scmd.create_random_index_list(args[1])
+                    elif len(args) > 2 and type(args[2]) == int:
+                        scmd.create_random_index_list(args[1], count = args[2])
+                    else:
+                        raise IndexError
+
+                case "convert-url-to-uri": # TODO; QoL function :P
+                    ...
 
                 case "exit":
                     tasks = asyncio.all_tasks()
