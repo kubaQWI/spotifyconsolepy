@@ -138,7 +138,7 @@ async def get_input(prompt: str = "? ") -> None:
                     else:
                         raise IndexError
 
-                case "convert-url-to-uri": # TODO
+                case "convert-url-to-uri": # TODO; QoL function :P
                     ...
 
                 case "exit":

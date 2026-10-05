@@ -7,7 +7,7 @@ from typing import Optional
 import numpy
 import config
 
-debug = False # change it 
+debug = True # change it 
 _sp: Optional[spotipy.Spotify] = None
 _device_name: Optional[str] = None
 
@@ -133,7 +133,7 @@ async def set_volume(volume: int, device_data: dict | None = None) -> None:
     except Exception as e:
         print(f"! There was an error: {e}")
 
-async def fade_out(device_data: dict | None = None, fade_duration: int | float = 5):
+async def fade_out(device_data: dict | None = None, fade_duration: int | float = 5): # deprecated
     sp = get_spotify()
     if sp is None:
         return
@@ -154,7 +154,7 @@ async def fade_out(device_data: dict | None = None, fade_duration: int | float =
         print(vol)
         await asyncio.sleep(fade_duration / 15)
 
-async def fade_in(device_data: dict | None = None, fade_duration: int | float = 5):
+async def fade_in(device_data: dict | None = None, fade_duration: int | float = 5): # reprecated
     sp = get_spotify()
     if sp is None:
         return
@@ -454,15 +454,42 @@ def create_random_index_list(playlist_uri: str | None = None, file_dir: str = ".
             rolled_number.add(randint)
             i += 1
 
-    if debug:
-        print(f"Is length of shuffled and indexes equal: {len(shuffled) == len(indexes)}")
-
     with open(file_dir, "w") as random_indexes:
         random_indexes.write(f"{shuffled}")
+        random_indexes.write(f"\nGenerated random indexes for: {playlist_uri}")
 
     print("Generated new randomized list for playlist.")
 
     return
+
+async def play_from_rand_indexes(device_id: str | None = None, file_dir: str = "./randomized_list.txt") -> None:
+    sp = get_spotify()
+
+    if sp is None:
+        return
+
+    if device_id is None:
+        data = await api_get_device_data()
+        if data is None:
+            return
+        
+        device_id = data["id"]
+        name = data["name"]
+
+    playlist_uri = "spotify:playlist:02hdeJ4xNLqi0ek760Znxh"
+
+    with open(file_dir, 'w') as current_index:
+        index_list = current_index.readline()
+        print(index_list)
+        
+        sp.start_playback(context_uri = playlist_uri, offset = {"position" : 188}, device_id = device_id)
+
+        await asyncio.sleep(0.25)
+
+        playback = await current_playback()
+
+        print(playback)
+
 
 if __name__ == "__main__":
     if not debug:
@@ -471,8 +498,7 @@ if __name__ == "__main__":
 
     playlist_uri = "spotify:playlist:02hdeJ4xNLqi0ek760Znxh"
 
-    create_random_index_list(playlist_uri = playlist_uri)
-
+    asyncio.run(play_from_rand_indexes())
 """
 "   Made with <3 by kubaQWI and cement for ZSTiO Radiowęzeł Automated Music System using Spotify API
 "   https://github.com/kubaQWI/spotifyconsolepy
